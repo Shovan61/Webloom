@@ -13,11 +13,20 @@ export default function Site() {
             width={80}
             height={80}
             alt="Icon"
-           className="mt-2 w-[60px] md:w-20 lg:w-[100px] h-auto"
+            className="mt-2 w-[60px] md:w-20 lg:w-[100px] h-auto"
           />
           <h1 className="text-4xl md:text-[70px] font-bold text-center bg-gradient-1  bg-clip-text text-transparent">
             Webloom
           </h1>
+        </div>
+        <div className="flex justify-center items-center relative px-5">
+          <Image
+            src="/dummy_dashboard.png"
+            width={320}
+            height={100}
+            alt="dummy dashboard"
+            className="mt-2 sm:w-md !md:w-3xl !lg:w-3xl"
+          />
         </div>
       </section>
     </main>
