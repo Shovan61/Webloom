@@ -1,5 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+/* app/globals.css */
+@import "tailwindcss"; /* Tailwind v4 core */
+@import "tw-animate-css"; /* optional */
 
 /* ===== Base Reset ===== */
 html,
@@ -13,64 +14,157 @@ body {
   box-sizing: border-box;
 }
 
-/* ====== Theme Variables ====== */
-@theme {
-  /* Light Mode Colors */
-  --color-background: hsl(0 0% 100%);
-  --color-foreground: hsl(240 10% 3.9%);
-  --color-muted: hsl(240 4.8% 95.9%);
-  --color-muted-foreground: hsl(240 3.8% 46.1%);
-  --color-popover: hsl(0 0% 100%);
-  --color-popover-foreground: hsl(240 10% 3.9%);
-  --color-card: hsl(0 0% 100%);
-  --color-card-foreground: hsl(240 10% 3.9%);
-  --color-border: hsl(240 5.9% 90%);
-  --color-input: hsl(240 5.9% 90%);
-  --color-primary: hsl(240 5.9% 10%);
-  --color-primary-foreground: hsl(0 0% 98%);
-  --color-secondary: hsl(240 4.8% 95.9%);
-  --color-secondary-foreground: hsl(240 5.9% 10%);
-  --color-accent: hsl(240 4.8% 95.9%);
-  --color-accent-foreground: hsl(240 5.9% 10%);
-  --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(0 0% 98%);
-  --color-ring: hsl(240 5.9% 10%);
-}
-
-/* ====== Dark Mode Overrides ====== */
-@media (prefers-color-scheme: dark) {
-  @theme {
-    --color-background: hsl(236 27.95% 4.08%);
-    --color-foreground: hsl(236 4.3% 97.55%);
-    --color-muted: hsl(236 21.5% 15.3%);
-    --color-muted-foreground: hsl(236 4.3% 55.1%);
-    --color-popover: hsl(236 56.4% 6.63%);
-    --color-popover-foreground: hsl(236 4.3% 97.55%);
-    --color-card: hsl(236 56.4% 6.63%);
-    --color-card-foreground: hsl(236 4.3% 97.55%);
-    --color-border: hsl(236 21.5% 15.3%);
-    --color-input: hsl(236 21.5% 15.3%);
-    --color-primary: hsl(236 43% 51%);
-    --color-primary-foreground: hsl(236 4.3% 5.1%);
-    --color-secondary: hsl(236 21.5% 15.3%);
-    --color-secondary-foreground: hsl(236 4.3% 97.55%);
-    --color-accent: hsl(236 21.5% 15.3%);
-    --color-accent-foreground: hsl(236 4.3% 97.55%);
-    --color-destructive: hsl(0 62.8% 30.6%);
-    --color-destructive-foreground: hsl(236 4.3% 97.55%);
-    --color-ring: hsl(236 43% 51%);
-  }
-}
-
-/* ====== Apply Theme ====== */
+/* ------------------------------------------------------------------
+   1. Light Theme – CSS Variables (HSL components only)
+   ------------------------------------------------------------------ */
 @layer base {
   :root {
-    --gradient: linear-gradient(to top left, #4b6cb7, #182848);
     color-scheme: light dark;
+
+    /* Gradients */
+    --gradient: linear-gradient(to top left, #4b6cb7, #182848);
+    --gradient-1: linear-gradient(to top left, #1488cc, #2b32b2);
+
+    /* Light colors */
+    --background: 215 53.3% 3.52%;
+    --foreground: 215 8.2% 97.2%;
+    --muted: 215 41% 13.2%;
+    --muted-foreground: 215 8.2% 54.4%;
+    --popover: 215 48.6% 5.72%;
+    --popover-foreground: 215 8.2% 97.2%;
+    --card: 215 48.6% 5.72%;
+    --card-foreground: 215 8.2% 97.2%;
+    --border: 215 41% 13.2%;
+    --input: 215 41% 13.2%;
+    --primary: 215 82% 44%;
+    --primary-foreground: 215 8.2% 97.2%;
+    --secondary: 215 41% 13.2%;
+    --secondary-foreground: 215 8.2% 97.2%;
+    --accent: 215 41% 13.2%;
+    --accent-foreground: 215 8.2% 97.2%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 215 8.2% 97.2%;
+    --ring: 215 82% 44%;
+  }
+}
+
+/* ------------------------------------------------------------------
+   2. Dark Theme – Use [data-theme="dark"] (manual toggle)
+   ------------------------------------------------------------------ */
+@layer base {
+  [data-theme="dark"] {
+    --gradient: linear-gradient(to top left, #182848, #4b6cb7);
+    --gradient-1: linear-gradient(to top left, #2b32b2, #1488cc);
+
+    --background: 236 27.95% 4.08%;
+    --foreground: 236 4.3% 97.55%;
+    --muted: 236 21.5% 15.3%;
+    --muted-foreground: 236 4.3% 55.1%;
+    --popover: 236 56.4% 6.63%;
+    --popover-foreground: 236 4.3% 97.55%;
+    --card: 236 56.4% 6.63%;
+    --card-foreground: 236 4.3% 97.55%;
+    --border: 236 21.5% 15.3%;
+    --input: 236 21.5% 15.3%;
+    --primary: 236 43% 51%;
+    --primary-foreground: 236 4.3% 5.1%;
+    --secondary: 236 21.5% 15.3%;
+    --secondary-foreground: 236 4.3% 97.55%;
+    --accent: 236 21.5% 15.3%;
+    --accent-foreground: 236 4.3% 97.55%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 236 4.3% 97.55%;
+    --ring: 236 43% 51%;
+  }
+}
+
+/* ------------------------------------------------------------------
+   3. Auto dark mode via prefers-color-scheme (optional)
+   ------------------------------------------------------------------ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --gradient: linear-gradient(to top left, #182848, #4b6cb7);
+    --gradient-1: linear-gradient(to top left, #2b32b2, #1488cc);
+
+    --background: 236 27.95% 4.08%;
+    --foreground: 236 4.3% 97.55%;
+    --muted: 236 21.5% 15.3%;
+    --muted-foreground: 236 4.3% 55.1%;
+    --popover: 236 56.4% 6.63%;
+    --popover-foreground: 236 4.3% 97.55%;
+    --card: 236 56.4% 6.63%;
+    --card-foreground: 236 4.3% 97.55%;
+    --border: 236 21.5% 15.3%;
+    --input: 236 21.5% 15.3%;
+    --primary: 236 43% 51%;
+    --primary-foreground: 236 4.3% 5.1%;
+    --secondary: 236 21.5% 15.3%;
+    --secondary-foreground: 236 4.3% 97.55%;
+    --accent: 236 21.5% 15.3%;
+    --accent-foreground: 236 4.3% 97.55%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 236 4.3% 97.55%;
+    --ring: 236 43% 51%;
+  }
+}
+
+/* ------------------------------------------------------------------
+   4. Tell Tailwind to generate color classes
+   ------------------------------------------------------------------ */
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ring: var(--ring);
+}
+
+/* ------------------------------------------------------------------
+   5. Gradient utilities – bg-gradient, bg-gradient-1
+   ------------------------------------------------------------------ */
+@layer utilities {
+  .bg-gradient {
+    background-image: var(--gradient);
+  }
+  .bg-gradient-1 {
+    background-image: var(--gradient-1);
   }
 
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+  /* ---- Grid using the *first stop* of --gradient-1 ---- */
+  .bg-grid {
+    /* Helper: extract first color of the gradient */
+    --grid-color: color-mix(in srgb, var(--gradient-1) 100%, transparent);
+    background-image: linear-gradient(
+        to right,
+        var(--grid-color) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .bg-grid-sm {
+    --grid-color: color-mix(in srgb, var(--gradient-1) 100%, transparent);
+    background-image: linear-gradient(
+        to right,
+        var(--grid-color) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    background-size: 10px 10px;
   }
 }
