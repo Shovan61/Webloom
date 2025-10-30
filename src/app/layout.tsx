@@ -17,6 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Webloom",
+  
   description: "Sass application for agency owners",
 };
 
