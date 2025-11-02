@@ -84,7 +84,7 @@ export default function Site() {
                   href={`/agency?plan=${card.priceId}`}
                   className={cn(
                     "w-full text-center bg-primary p-2 rounded-md",
-                    card.title === "Unlimited Saas" ? "bg-gray-600!" : ""
+                    card.title === "Unlimited Saas" ? "bg-gray-600! text-white" : ""
                   )}
                 >
                   Get Started

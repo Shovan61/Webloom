@@ -10,7 +10,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         <Navigation user={null} />
         {children}
       </ClerkProvider>
-      ;
+      
     </main>
   );
 };
