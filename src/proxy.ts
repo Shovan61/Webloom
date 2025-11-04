@@ -28,8 +28,32 @@ export default clerkMiddleware(async (auth, req) => {
   // If Sub domains exist (send the user to [domain]/path along with the search params)
   if (customDomain) {
     return NextResponse.rewrite(
-      new URL(`/${customDomain}${pathWithSearchParams}`)
+      new URL(`/${customDomain}/${pathWithSearchParams}`)
     );
+  }
+
+  // so No Sub domain
+  // 1 check url.pathname = sign-in or sign-up
+  if (url.pathname === "sign-in" || url.pathname === "sign-up") {
+    // Rewrite to /agency/sign-in or sign-up
+    return NextResponse.redirect(new URL(`/agency/sign-in`, req.url));
+  }
+
+  // try to access the website
+  if (
+    url.pathname === "/" ||
+    url.pathname === "/site" ||
+    url.host === process.env.NEXT_PUBLIC_DOMAIN
+  ) {
+    return NextResponse.rewrite(new URL(`/site`, req.url));
+  }
+
+  // try to access the agency
+  if (
+    url.pathname.startsWith("/agency") ||
+    url.pathname.startsWith("/subaccount")
+  ) {
+    return NextResponse.rewrite(new URL(`${pathWithSearchParams}`, req.url));
   }
 });
 
