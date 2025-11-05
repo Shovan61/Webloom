@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -66,10 +66,11 @@ createdAt DateTime @default(now())
 updatedAt DateTime @updatedAt
 role Role @default(SUBACCOUNT_USER)
 agencyId String?
-Agency Agency @relation(fields:[agencyId], references: [id], onDelete: Cascade)
+Agency Agency? @relation(fields:[agencyId], references: [id], onDelete: Cascade)
 Permissions Permissions[]
 Tickets Tickets[]
 Notification Notification[]
+
 @@index([agencyId])
 }
 
@@ -135,6 +136,7 @@ model SubAccount {
   Contact Contact[]
   Notification Notification[]
   Tags Tag[]
+  Pipeline Pipeline[]
 
   @@index([agencyId])
 }
@@ -280,7 +282,7 @@ model AgencySidebarOption {
   id String @id @default(uuid())
   name String @default("Menu")
   link String @default("#")
-  icon Icon @default("info")
+  icon Icon @default(info)
   agencyId String?
   Agency Agency? @relation(fields:[agencyId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
@@ -293,11 +295,12 @@ model SubAccountSidebarOptions {
   id String @id @default(uuid())
   name String @default("Menu")
   link String @default("#")
-  icon Icon @default("info")
+  icon Icon @default(info)
   subAccountId String?
   SubAccount SubAccount? @relation(fields: [subAccountId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
 
   @@index([subAccountId])
 }
@@ -313,8 +316,8 @@ model Invitation {
   email String @unique
   agencyId String?
   Agency Agency? @relation(fields:[agencyId], references: [id], onDelete: Cascade)
-  status InvitationStatus @default("PENDING")
-  role Role @default("SUBACCOUNT_USER")
+  status InvitationStatus @default(PENDING)
+  role Role @default(SUBACCOUNT_USER)
 
   @@index([agencyId])
 }
@@ -325,7 +328,6 @@ model Notification {
    agencyId String
    subAccountId String?
    userId String
-   agencyId String
 
    Agency Agency @relation(fields:[agencyId], references: [id], onDelete: Cascade)
    SubAccount SubAccount? @relation(fields: [subAccountId], references: [id], onDelete: Cascade)
@@ -375,5 +377,5 @@ model AddOns {
   agencyId String? @unique
   Agency Agency? @relation(fields:[agencyId], references: [id])
 
-  @@index([customerId])
+  @@index([agencyId])
   }
