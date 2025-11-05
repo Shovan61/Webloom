@@ -267,4 +267,113 @@ model FunnelPage {
   updatedAt DateTime @updatedAt
   pathName String @default("")
   visits Int @default(0)
+  content String? @db.Text
+  funnelId String
+  Funnel Funnel @relation(fields: [funnelId], references: [id], onDelete: Cascade)
+
+  @@index([funnelId])
+
 }
+
+
+model AgencySidebarOption {
+  id String @id @default(uuid())
+  name String @default("Menu")
+  link String @default("#")
+  icon Icon @default("info")
+  agencyId String?
+  Agency Agency? @relation(fields:[agencyId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([agencyId])
+}
+
+model SubAccountSidebarOptions {
+  id String @id @default(uuid())
+  name String @default("Menu")
+  link String @default("#")
+  icon Icon @default("info")
+  subAccountId String?
+  SubAccount SubAccount? @relation(fields: [subAccountId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([subAccountId])
+}
+
+enum InvitationStatus {
+ACCEPTED
+REVOKED
+PENDING
+}
+
+model Invitation {
+  id String @id @default(uuid())
+  email String @unique
+  agencyId String?
+  Agency Agency? @relation(fields:[agencyId], references: [id], onDelete: Cascade)
+  status InvitationStatus @default("PENDING")
+  role Role @default("SUBACCOUNT_USER")
+
+  @@index([agencyId])
+}
+
+model Notification {
+   id String @id @default(uuid()) 
+   notification String
+   agencyId String
+   subAccountId String?
+   userId String
+   agencyId String
+
+   Agency Agency @relation(fields:[agencyId], references: [id], onDelete: Cascade)
+   SubAccount SubAccount? @relation(fields: [subAccountId], references: [id], onDelete: Cascade)
+   User User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+ @@index([subAccountId])
+ @@index([agencyId])
+}
+
+enum Plan {
+  price_10MHtcld5BkShtqx5CVF5nj
+  price_10MHuQlLd5BkShtqogRZXP2e
+}
+
+model Subscription {
+  id String @id @default(uuid()) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  plan Plan?
+  price String?
+  active Boolean @default(false)
+
+  priceId String
+  customerId String
+  currentPeriodDateTime DateTime
+  subscriptionId String @unique
+
+  agencyId String? @unique
+  Agency Agency? @relation(fields:[agencyId], references: [id])
+
+  @@index([customerId])
+
+}
+
+model AddOns {
+ id String @id @default(uuid()) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name String
+  active Boolean @default(false)
+  priceId String
+
+  agencyId String? @unique
+  Agency Agency? @relation(fields:[agencyId], references: [id])
+
+  @@index([customerId])
+  }
