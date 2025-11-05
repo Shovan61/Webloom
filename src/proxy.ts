@@ -5,11 +5,18 @@ const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/site",
+  "/",
   "/api/uploadthing",
 ]);
 
+const isAppRoute = createRouteMatcher([
+  "/dashboard(.*)",
+  "/agency(.*)",
+  "/subaccount(.*)",
+]);
+
 export default clerkMiddleware(async (auth, req) => {
-  if (!isPublicRoute(req)) {
+  if (!isPublicRoute(req) && isAppRoute(req)) {
     await auth.protect();
   }
   // Logic for after auth
@@ -28,7 +35,7 @@ export default clerkMiddleware(async (auth, req) => {
   // If Sub domains exist (send the user to [domain]/path along with the search params)
   if (customDomain) {
     return NextResponse.rewrite(
-      new URL(`/${customDomain}/${pathWithSearchParams}`)
+      new URL(`/${customDomain}${pathWithSearchParams}`, req.url)
     );
   }
 
@@ -38,6 +45,7 @@ export default clerkMiddleware(async (auth, req) => {
     // Rewrite to /agency/sign-in or sign-up
     return NextResponse.redirect(new URL(`/agency/sign-in`, req.url));
   }
+  console.log(url.pathname, "pathname");
 
   // try to access the website
   if (
