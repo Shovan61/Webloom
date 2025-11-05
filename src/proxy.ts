@@ -45,13 +45,11 @@ export default clerkMiddleware(async (auth, req) => {
     // Rewrite to /agency/sign-in or sign-up
     return NextResponse.redirect(new URL(`/agency/sign-in`, req.url));
   }
-  console.log(url.pathname, "pathname");
 
   // try to access the website
   if (
     url.pathname === "/" ||
-    url.pathname === "/site" ||
-    url.host === process.env.NEXT_PUBLIC_DOMAIN
+    (url.pathname === "/site" && url.host === process.env.NEXT_PUBLIC_DOMAIN)
   ) {
     return NextResponse.rewrite(new URL(`/site`, req.url));
   }
