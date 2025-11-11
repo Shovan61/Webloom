@@ -1,7 +1,6 @@
 import { getAuthUserDetails, verifyAndAcceptInvitation } from "@/lib/query";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import React from "react";
 
 async function AgencyPage() {
   const authUser = await currentUser();
@@ -10,6 +9,9 @@ async function AgencyPage() {
 
   // if user was sent an invitation
   const agencyId = await verifyAndAcceptInvitation()
+
+  console.log(agencyId, "===========agencyId============");
+  
 
   // Get the User details
   const user = await getAuthUserDetails();
