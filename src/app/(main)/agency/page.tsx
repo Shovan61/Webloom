@@ -1,3 +1,4 @@
+import AgencyDetails from "@/components/forms/AgencyDetails";
 import { Plan } from "@/generated/prisma";
 import { getAuthUserDetails, verifyAndAcceptInvitation } from "@/lib/query";
 import { currentUser } from "@clerk/nextjs/server";
@@ -53,6 +54,9 @@ async function AgencyPage({ searchParams }: AgencyPageProps) {
     <div className="flex justify-center items-center mt-4">
       <div className="max-w-[850px] border p-4 rounded-xl">
         <h1 className="text-4xl">Create An Agency</h1>
+        <AgencyDetails
+          data={{ companyEmail: authUser?.emailAddresses[0].emailAddress }}
+        />
       </div>
     </div>
   );
