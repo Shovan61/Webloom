@@ -39,6 +39,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import FileUpload from "../global/file-upload";
 
 type Props = {
   data?: Partial<Agency>;
@@ -94,12 +95,18 @@ function AgencyDetails({ data }: Props) {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
+                disabled={isLoading}
                 control={form.control}
                 name="agencyLogo"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Agency Logo</FormLabel>
                     <FormControl>
+                      <FileUpload
+                        apiEndPoint="agencylogo"
+                        onChange={field.onChange}
+                        value={field.value}
+                      />
                     </FormControl>
                     <FormDescription>
                       This is your public display name.
