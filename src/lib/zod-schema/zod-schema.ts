@@ -13,5 +13,4 @@ export const AgencySchema = z.object({
   agencyLogo: z.string().min(1, "At least 1 charecter"),
 });
 
-// Infer the TypeScript type
-type AgencyFormValues = z.infer<typeof AgencySchema>;
+export type AgencyFormValues = z.infer<typeof AgencySchema>;
