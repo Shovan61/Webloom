@@ -6,7 +6,6 @@ import { Button } from "../ui/button";
 import { UploadDropzone } from "@/lib/uploadthing";
 import { toast } from "sonner";
 
-
 type Props = {
   apiEndPoint: "agencylogo" | "avatar" | "subaccountLogo";
   onChange: (url?: string) => void;
@@ -56,7 +55,7 @@ function FileUpload({ apiEndPoint, onChange, value }: Props) {
         }}
         onUploadError={(error: Error) => {
           console.log(error);
-          toast.error("Something went wrong!")
+          toast.error("Something went wrong!");
         }}
       />
     </div>
