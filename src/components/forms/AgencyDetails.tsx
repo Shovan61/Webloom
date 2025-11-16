@@ -40,6 +40,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import FileUpload from "../global/file-upload";
+import { Input } from "../ui/input";
 
 type Props = {
   data?: Partial<Agency>;
@@ -81,7 +82,7 @@ function AgencyDetails({ data }: Props) {
 
   return (
     <AlertDialog>
-      <Card className="w-full mt-8">
+      <Card className="w-full mt-8 border-0 shadow-xl">
         <CardHeader>
           <CardTitle className="text-xl">Agency Information</CardTitle>
           <CardDescription>
@@ -108,13 +109,74 @@ function AgencyDetails({ data }: Props) {
                         value={field.value}
                       />
                     </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
+
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              <div className="flex md:flex-row gap-4">
+                {/* Agency Name */}
+                <FormField
+                  disabled={isLoading}
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Agency Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="New Agency Name" {...field} />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  disabled={isLoading}
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Agency Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="New Agency Name" {...field} />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  disabled={isLoading}
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Agency Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="New Agency Name" {...field} />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  disabled={isLoading}
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Agency Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="New Agency Name" {...field} />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <Button type="submit">Submit</Button>
             </form>
           </Form>

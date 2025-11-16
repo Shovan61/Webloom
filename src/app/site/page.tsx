@@ -32,7 +32,7 @@ export default function Site() {
             alt="Icon"
             className="mt-2 w-[60px] md:w-20 lg:w-[100px] h-auto select-none!"
           />
-          <h1 className="text-4xl md:text-[70px] font-bold text-center bg-gradient-1 select-none!  bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-[70px] font-bold text-center bg-gradient select-none!  bg-clip-text text-transparent">
             Webloom
           </h1>
         </div>
