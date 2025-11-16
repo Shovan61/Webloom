@@ -56,24 +56,24 @@ function AgencyDetails({ data }: Props) {
 
   const form = useForm<AgencyFormValues>({
     mode: "onChange",
-    resolver: zodResolver(AgencySchema), // Integrate Zod for schema-based validation
+    resolver: zodResolver(AgencySchema),
     defaultValues: {
-      name: data?.name,
-      companyEmail: data?.companyEmail,
-      companyPhone: data?.companyPhone,
-      whiteLabel: data?.whiteLabel,
-      address: data?.address,
-      city: data?.city,
-      zipCode: data?.zipCode,
-      state: data?.state,
-      country: data?.country,
-      agencyLogo: data?.agencyLogo,
+      name: data?.name || "",
+      companyEmail: data?.companyEmail || "",
+      companyPhone: data?.companyPhone || "",
+      whiteLabel: data?.whiteLabel ?? false, // Ensure it's a boolean, not undefined
+      address: data?.address || "",
+      city: data?.city || "",
+      zipCode: data?.zipCode || "",
+      state: data?.state || "",
+      country: data?.country || "",
+      agencyLogo: data?.agencyLogo || "",
     },
   });
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = async (data: AgencyFormValues) => {
+  const onSubmit = (data: AgencyFormValues) => {
     console.log("Invoice Data:", data); // Log validated form data to the console
   };
 
@@ -82,7 +82,7 @@ function AgencyDetails({ data }: Props) {
       form.reset();
     }
   }, [data]);
-
+  console.log(form.formState.errors);
   return (
     <AlertDialog>
       <Card className="w-full mt-8 border-0 shadow-xl">
@@ -90,7 +90,6 @@ function AgencyDetails({ data }: Props) {
           <CardTitle className="text-xl">Agency Information</CardTitle>
           <CardDescription>
             <span className="text-xs">
-              {" "}
               Fill out Agency information to create one.
             </span>
           </CardDescription>
@@ -112,7 +111,7 @@ function AgencyDetails({ data }: Props) {
                         value={field.value}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-rose-500" />
                   </FormItem>
                 )}
               />
@@ -133,7 +132,7 @@ function AgencyDetails({ data }: Props) {
                         />
                       </FormControl>
 
-                      <FormMessage />
+                      <FormMessage className="text-rose-500" />
                     </FormItem>
                   )}
                 />
@@ -153,7 +152,7 @@ function AgencyDetails({ data }: Props) {
                         />
                       </FormControl>
 
-                      <FormMessage />
+                      <FormMessage className="text-rose-500" />
                     </FormItem>
                   )}
                 />
@@ -171,34 +170,12 @@ function AgencyDetails({ data }: Props) {
                       <Input placeholder="New Agency Phone" {...field} />
                     </FormControl>
 
-                    <FormMessage />
+                    <FormMessage className="text-rose-500" />
                   </FormItem>
                 )}
               />
               {/* White Label */}
-              {/* <FormField
-                disabled={isLoading}
-                control={form.control}
-                name="whiteLabel"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Whitelabel</FormLabel>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        id={field.name}
-                      />
-                    </FormControl>
-                    <FormDescription className="w-xl">
-                      Turning on Whitelabel mode will show your agency logo to
-                      all sub-accounts by default. You can overwrite this
-                      functionality through sub-account settings.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
+
               <FormField
                 disabled={isLoading}
                 control={form.control}
@@ -225,17 +202,105 @@ function AgencyDetails({ data }: Props) {
                         </div>
                       </RadioGroup>
                     </FormControl>
-                    <FormDescription>
+                    <FormDescription className="w-xl">
                       Turning on Whitelabel mode will show your agency logo to
                       all sub-accounts by default. You can overwrite this
                       functionality through sub-account settings.
                     </FormDescription>
-                    <FormMessage />
+                    <FormMessage className="text-rose-50" />
+                  </FormItem>
+                )}
+              />
+              {/* Address */}
+              <FormField
+                disabled={isLoading}
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Address</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter address" {...field} />
+                    </FormControl>
+
+                    <FormMessage className="text-rose-500" />
                   </FormItem>
                 )}
               />
 
-              <Button type="submit">Submit</Button>
+              <div className="flex flex-col md:flex-row gap-2 justify-between">
+                {/* City */}
+                <FormField
+                  disabled={isLoading}
+                  control={form.control}
+                  name="city"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>City</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter city" {...field} />
+                      </FormControl>
+
+                      <FormMessage className="text-rose-500" />
+                    </FormItem>
+                  )}
+                />
+                {/* State */}
+                <FormField
+                  disabled={isLoading}
+                  control={form.control}
+                  name="state"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>State</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter state" {...field} />
+                      </FormControl>
+
+                      <FormMessage className="text-rose-500" />
+                    </FormItem>
+                  )}
+                />
+                {/* Zipcode */}
+                <FormField
+                  disabled={isLoading}
+                  control={form.control}
+                  name="zipCode"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Zip-code</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter zipcode" {...field} />
+                      </FormControl>
+
+                      <FormMessage className="text-rose-500" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              {/* Country */}
+              <FormField
+                disabled={isLoading}
+                control={form.control}
+                name="country"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Country</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter country" {...field} />
+                    </FormControl>
+
+                    <FormMessage className="text-rose-500" />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="cursor-pointer hover:bg-blue-700 transition-all"
+              >
+                Submit
+              </Button>
             </form>
           </Form>
         </CardContent>
