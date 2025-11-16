@@ -41,6 +41,9 @@ import {
 } from "../ui/form";
 import FileUpload from "../global/file-upload";
 import { Input } from "../ui/input";
+import { Switch } from "../ui/switch";
+import { Radio } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 type Props = {
   data?: Partial<Agency>;
@@ -109,12 +112,11 @@ function AgencyDetails({ data }: Props) {
                         value={field.value}
                       />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <div className="flex md:flex-row gap-4">
+              <div className="flex flex-col md:flex-row gap-4">
                 {/* Agency Name */}
                 <FormField
                   disabled={isLoading}
@@ -124,52 +126,31 @@ function AgencyDetails({ data }: Props) {
                     <FormItem>
                       <FormLabel>Agency Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="New Agency Name" {...field} />
+                        <Input
+                          placeholder="New Agency Name"
+                          {...field}
+                          className="w-xs"
+                        />
                       </FormControl>
 
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                {/* Agency Email */}
                 <FormField
                   disabled={isLoading}
                   control={form.control}
-                  name="name"
+                  name="companyEmail"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Agency Name</FormLabel>
+                      <FormLabel>Agency Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="New Agency Name" {...field} />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  disabled={isLoading}
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Agency Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="New Agency Name" {...field} />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  disabled={isLoading}
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Agency Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="New Agency Name" {...field} />
+                        <Input
+                          placeholder="New Agency Name"
+                          {...field}
+                          className="w-xs"
+                        />
                       </FormControl>
 
                       <FormMessage />
@@ -177,6 +158,83 @@ function AgencyDetails({ data }: Props) {
                   )}
                 />
               </div>
+
+              {/* Agency Phone */}
+              <FormField
+                disabled={isLoading}
+                control={form.control}
+                name="companyPhone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Agency Phone</FormLabel>
+                    <FormControl>
+                      <Input placeholder="New Agency Phone" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* White Label */}
+              {/* <FormField
+                disabled={isLoading}
+                control={form.control}
+                name="whiteLabel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Whitelabel</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        id={field.name}
+                      />
+                    </FormControl>
+                    <FormDescription className="w-xl">
+                      Turning on Whitelabel mode will show your agency logo to
+                      all sub-accounts by default. You can overwrite this
+                      functionality through sub-account settings.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              /> */}
+              <FormField
+                disabled={isLoading}
+                control={form.control}
+                name="whiteLabel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Whitelabel</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        value={field.value ? "true" : "false"} // Set value as 'true' or 'false' based on boolean
+                        onValueChange={(value) =>
+                          field.onChange(value === "true")
+                        } // Set 'true' or 'false' based on radio selection
+                      >
+                        <div className="flex space-x-4">
+                          <div>
+                            <RadioGroupItem value="true" id="whitelabel-yes" />
+                            <label htmlFor="whitelabel-yes">Yes</label>
+                          </div>
+                          <div>
+                            <RadioGroupItem value="false" id="whitelabel-no" />
+                            <label htmlFor="whitelabel-no">No</label>
+                          </div>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormDescription>
+                      Turning on Whitelabel mode will show your agency logo to
+                      all sub-accounts by default. You can overwrite this
+                      functionality through sub-account settings.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <Button type="submit">Submit</Button>
             </form>
           </Form>

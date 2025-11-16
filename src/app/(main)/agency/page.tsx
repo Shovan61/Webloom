@@ -52,7 +52,7 @@ async function AgencyPage({ searchParams }: AgencyPageProps) {
 
   return (
     <div className="flex justify-center items-center mt-4">
-      <div className="max-w-[850px] border-0 p-4 rounded-xl">
+      <div className="max-w-[1200px]! border-0 p-4 rounded-xl">
         <h1 className="text-4xl">Create An Agency</h1>
         <AgencyDetails
           data={{ companyEmail: authUser?.emailAddresses[0].emailAddress }}

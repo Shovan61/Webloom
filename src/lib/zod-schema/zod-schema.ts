@@ -3,7 +3,7 @@ import { z } from "zod";
 export const AgencySchema = z.object({
   name: z.string().min(2, "Agency name must be atleast two charecters"),
   companyEmail: z.email("Invalid email address"),
-  companyPhone: z.string().min(7, "Phone must be at least 18"),
+  companyPhone: z.string().min(7, "Phone must be at least 7"),
   whiteLabel: z.boolean(),
   address: z.string().min(1, "At least 1 charecter"),
   city: z.string().min(1, "At least 1 charecter"),
