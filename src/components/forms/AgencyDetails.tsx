@@ -5,7 +5,17 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -32,7 +42,11 @@ import FileUpload from "../global/file-upload";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { NumberInput } from "@tremor/react";
-import { saveActivityLogsNotification, updateAgencyDetails } from "@/lib/query";
+import {
+  deleteAgencyFunction,
+  saveActivityLogsNotification,
+  updateAgencyDetails,
+} from "@/lib/query";
 import { Spinner } from "../ui/spinner";
 
 type Props = {
@@ -67,12 +81,34 @@ function AgencyDetails({ data }: Props) {
     console.log("Invoice Data:", data); // Log validated form data to the console
   };
 
+  const handleDeleteAgency = async () => {
+    if (!data?.id) {
+      return;
+    }
+    setdeleteAgency(true);
+    // WIP: discontinue the subscription
+    try {
+      const response = await deleteAgencyFunction(data.id);
+
+      if (response.status === 200) {
+        toast.success("Succesfully deleted!");
+      } else {
+        toast.error("Failed to Delete!");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong!");
+    } finally {
+      setdeleteAgency(false);
+    }
+  };
+
   useEffect(() => {
     if (data) {
       form.reset();
     }
   }, [data]);
-  console.log(form.formState.errors);
+
   return (
     <AlertDialog>
       <Card className="w-full mt-8 border-0 shadow-xl">
@@ -324,8 +360,8 @@ function AgencyDetails({ data }: Props) {
             </form>
           </Form>
           {data?.id && (
-            <>
-              <div className="flex flex-row items-center justify-between rounded-lg border border-rose-500 gap-4 p-4 m-4">
+            <div>
+              <div className="flex flex-row items-center  justify-between rounded-lg border border-rose-500 gap-4 p-4 m-4">
                 <div>
                   <div>Danger Zone</div>
                 </div>
@@ -342,8 +378,24 @@ function AgencyDetails({ data }: Props) {
               >
                 {deleteAgency ? <Spinner /> : "Delete"}
               </AlertDialogTrigger>
-            </>
+            </div>
           )}
+
+          <AlertDialogContent className="bg-black">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDeleteAgency}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
         </CardContent>
         <CardFooter className="flex-col gap-2"></CardFooter>
       </Card>

@@ -242,3 +242,18 @@ export const updateAgencyDetails = async (
     throw new Error("Something went wrong! updateAgencyGoal");
   }
 };
+
+export const deleteAgencyFunction = async (agencyId: string) => {
+  try {
+    const response = await db.agency.delete({
+      where: {
+        id: agencyId,
+      },
+    });
+
+    return { data: response, status: 200 };
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong! updateAgencyGoal");
+  }
+};
