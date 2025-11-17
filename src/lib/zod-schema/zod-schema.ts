@@ -5,12 +5,12 @@ export const AgencySchema = z.object({
   companyEmail: z.email("Invalid email address"),
   companyPhone: z.string().min(7, "Phone must be at least 7"),
   whiteLabel: z.boolean(),
-  address: z.string().min(1, "At least 1 charecter"),
-  city: z.string().min(1, "At least 1 charecter"),
-  zipCode: z.string().min(1, "At least 1 charecter"),
-  state: z.string().min(1, "At least 1 charecter"),
-  country: z.string().min(1, "At least 1 charecter"),
-  agencyLogo: z.string().min(1, "At least 1 charecter"),
+  address: z.string().min(1, "Address Required"),
+  city: z.string().min(1, "City Required"),
+  zipCode: z.string().min(1, "Zip Code Required"),
+  state: z.string().min(1, "State Required"),
+  country: z.string().min(1, "Country Required"),
+  agencyLogo: z.string().min(1, "Agency Logo Required"),
 });
 
 export type AgencyFormValues = z.infer<typeof AgencySchema>;

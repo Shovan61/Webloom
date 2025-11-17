@@ -5,21 +5,10 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { AlertDialog } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -41,9 +30,9 @@ import {
 } from "../ui/form";
 import FileUpload from "../global/file-upload";
 import { Input } from "../ui/input";
-import { Switch } from "../ui/switch";
-import { Radio } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { NumberInput } from "@tremor/react";
+import { updateAgencyDetails } from "@/lib/query";
 
 type Props = {
   data?: Partial<Agency>;
@@ -294,6 +283,21 @@ function AgencyDetails({ data }: Props) {
                   </FormItem>
                 )}
               />
+              <div className="flex flex-col gap-2">
+                <FormLabel>Create A Goal</FormLabel>
+                <FormDescription>
+                  Create a goal for your agency. As your business grows your
+                  goals grow too so dont forget to set the bar higher
+                </FormDescription>
+                <NumberInput
+                  defaultValue={data?.goal}
+                  onValueChange={async (value) => {
+                    if (data?.id) {
+                      await updateAgencyDetails(data?.id, { goal: value });
+                    }
+                  }}
+                />
+              </div>
               <Button
                 type="submit"
                 disabled={isLoading}

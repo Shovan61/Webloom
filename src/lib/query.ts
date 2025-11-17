@@ -1,6 +1,6 @@
 import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import { db } from "./db";
-import { User } from "@/generated/prisma";
+import { Agency, User } from "@/generated/prisma";
 
 export const getAuthUserDetails = async () => {
   try {
@@ -30,6 +30,7 @@ export const getAuthUserDetails = async () => {
 
     return userData;
   } catch (error) {
+    console.log(error);
     throw new Error("Something went wrong! getAuthUserDetails");
   }
 };
@@ -47,7 +48,6 @@ export const verifyAndAcceptInvitation = async () => {
         status: "PENDING",
       },
     });
-
 
     if (invitationExists?.agencyId) {
       const userDetails = await createTeamUser(invitationExists.agencyId, {
@@ -109,6 +109,7 @@ export const createTeamUser = async (agencyId: string, user: User) => {
 
     return response;
   } catch (error) {
+    console.log(error);
     throw new Error("Something went wrong! createTeamUser");
   }
 };
@@ -216,6 +217,26 @@ export const saveActivityLogsNotification = async ({
       });
     }
   } catch (error) {
+    console.log(error);
     throw new Error("Something went wrong! saveActivityLogsNotification");
+  }
+};
+
+export const updateAgencyDetails = async (
+  agencyId: string,
+  agencyDetails: Partial<Agency>
+) => {
+  try {
+    const response = await db.agency.update({
+      where: {
+        id: agencyId,
+      },
+      data: { ...agencyDetails },
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong! updateAgencyGoal");
   }
 };
