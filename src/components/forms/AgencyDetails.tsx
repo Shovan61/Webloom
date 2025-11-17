@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { AlertDialog } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -32,7 +32,8 @@ import FileUpload from "../global/file-upload";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { NumberInput } from "@tremor/react";
-import { updateAgencyDetails } from "@/lib/query";
+import { saveActivityLogsNotification, updateAgencyDetails } from "@/lib/query";
+import { Spinner } from "../ui/spinner";
 
 type Props = {
   data?: Partial<Agency>;
@@ -283,30 +284,66 @@ function AgencyDetails({ data }: Props) {
                   </FormItem>
                 )}
               />
-              <div className="flex flex-col gap-2">
-                <FormLabel>Create A Goal</FormLabel>
-                <FormDescription>
-                  Create a goal for your agency. As your business grows your
-                  goals grow too so dont forget to set the bar higher
-                </FormDescription>
-                <NumberInput
-                  defaultValue={data?.goal}
-                  onValueChange={async (value) => {
-                    if (data?.id) {
-                      await updateAgencyDetails(data?.id, { goal: value });
-                    }
-                  }}
-                />
-              </div>
+              {/* For Set Goal if a agency exist */}
+              {data?.id && (
+                <div className="flex flex-col gap-2">
+                  <FormLabel>Create A Goal</FormLabel>
+                  <FormDescription>
+                    Create a goal for your agency. As your business grows your
+                    goals grow too so dont forget to set the bar higher
+                  </FormDescription>
+                  <NumberInput
+                    defaultValue={data?.goal}
+                    onValueChange={async (value) => {
+                      if (data?.id) {
+                        await updateAgencyDetails(data?.id, { goal: value });
+                        await saveActivityLogsNotification({
+                          agencyId: data.id,
+                          description: `Updated the agency goal to | ${value} Sub-accounts`,
+                          subaccountId: undefined,
+                        });
+
+                        router.refresh();
+                      }
+                    }}
+                    min={1}
+                    className=""
+                    placeholder="Sub-account goal"
+                  />
+                </div>
+              )}
+
               <Button
                 type="submit"
                 disabled={isLoading}
                 className="cursor-pointer hover:bg-blue-700 transition-all"
               >
-                Submit
+                {isLoading && <Spinner />}
+                Save Agency Information
               </Button>
             </form>
           </Form>
+          {data?.id && (
+            <>
+              <div className="flex flex-row items-center justify-between rounded-lg border border-rose-500 gap-4 p-4 m-4">
+                <div>
+                  <div>Danger Zone</div>
+                </div>
+                <div className="text-gray-600 text-sm">
+                  Deleting your agency cannot be undone. This will also delete
+                  all sub-accounts and all data related to your sub-account.
+                  Sub-accounts will no longer have access to funnels, contacts
+                  etc.
+                </div>
+              </div>
+              <AlertDialogTrigger
+                disabled={isLoading || deleteAgency}
+                className="text-rose-500 cursor-pointer p-2 text-center mt-2 rounded-md hover:bg-rose-600 hover:text-white whitespace-nowrap"
+              >
+                {deleteAgency ? <Spinner /> : "Delete"}
+              </AlertDialogTrigger>
+            </>
+          )}
         </CardContent>
         <CardFooter className="flex-col gap-2"></CardFooter>
       </Card>

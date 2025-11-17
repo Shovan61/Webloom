@@ -1,3 +1,5 @@
+"use server";
+
 import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import { db } from "./db";
 import { Agency, User } from "@/generated/prisma";
