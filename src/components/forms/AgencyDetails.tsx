@@ -65,7 +65,7 @@ function AgencyDetails({ data }: Props) {
       name: data?.name || "",
       companyEmail: data?.companyEmail || "",
       companyPhone: data?.companyPhone || "",
-      whiteLabel: data?.whiteLabel ?? false, // Ensure it's a boolean, not undefined
+      whiteLabel: data?.whiteLabel ?? false, 
       address: data?.address || "",
       city: data?.city || "",
       zipCode: data?.zipCode || "",
@@ -124,7 +124,6 @@ function AgencyDetails({ data }: Props) {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
-                disabled={isLoading}
                 control={form.control}
                 name="agencyLogo"
                 render={({ field }) => (
@@ -144,7 +143,6 @@ function AgencyDetails({ data }: Props) {
               <div className="flex flex-col md:flex-row gap-4">
                 {/* Agency Name */}
                 <FormField
-                  disabled={isLoading}
                   control={form.control}
                   name="name"
                   render={({ field }) => (
@@ -164,7 +162,6 @@ function AgencyDetails({ data }: Props) {
                 />
                 {/* Agency Email */}
                 <FormField
-                  disabled={isLoading}
                   control={form.control}
                   name="companyEmail"
                   render={({ field }) => (
@@ -186,7 +183,6 @@ function AgencyDetails({ data }: Props) {
 
               {/* Agency Phone */}
               <FormField
-                disabled={isLoading}
                 control={form.control}
                 name="companyPhone"
                 render={({ field }) => (
@@ -203,7 +199,6 @@ function AgencyDetails({ data }: Props) {
               {/* White Label */}
 
               <FormField
-                disabled={isLoading}
                 control={form.control}
                 name="whiteLabel"
                 render={({ field }) => (
@@ -239,7 +234,6 @@ function AgencyDetails({ data }: Props) {
               />
               {/* Address */}
               <FormField
-                disabled={isLoading}
                 control={form.control}
                 name="address"
                 render={({ field }) => (
@@ -257,7 +251,6 @@ function AgencyDetails({ data }: Props) {
               <div className="flex flex-col md:flex-row gap-2 justify-between">
                 {/* City */}
                 <FormField
-                  disabled={isLoading}
                   control={form.control}
                   name="city"
                   render={({ field }) => (
@@ -273,7 +266,6 @@ function AgencyDetails({ data }: Props) {
                 />
                 {/* State */}
                 <FormField
-                  disabled={isLoading}
                   control={form.control}
                   name="state"
                   render={({ field }) => (
@@ -289,7 +281,6 @@ function AgencyDetails({ data }: Props) {
                 />
                 {/* Zipcode */}
                 <FormField
-                  disabled={isLoading}
                   control={form.control}
                   name="zipCode"
                   render={({ field }) => (
@@ -306,7 +297,6 @@ function AgencyDetails({ data }: Props) {
               </div>
               {/* Country */}
               <FormField
-                disabled={isLoading}
                 control={form.control}
                 name="country"
                 render={({ field }) => (
