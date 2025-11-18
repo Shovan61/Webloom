@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { FileIcon, X } from "lucide-react";
@@ -40,7 +41,7 @@ function FileUpload({ apiEndPoint, onChange, value }: Props) {
             </a>
           </div>
         )}
-        <Button onClick={() => onChange("")} variant={"ghost"} type="button">
+        <Button onClick={() => onChange("")} variant={"outline"} className="border-dotted cursor-pointer" type="button">
           <X className="h-4 w-4" /> Remove Logo
         </Button>
       </div>
@@ -49,7 +50,7 @@ function FileUpload({ apiEndPoint, onChange, value }: Props) {
   return (
     <div className="w-full bg-muted/30 ">
       <UploadDropzone
-        endpoint={apiEndPoint as any}
+        endpoint={"imageUploader"}
         onClientUploadComplete={(res) => {
           onChange(res?.[0].ufsUrl);
         }}

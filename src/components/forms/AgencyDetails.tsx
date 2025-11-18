@@ -82,7 +82,6 @@ function AgencyDetails({ data }: Props) {
 
   const onSubmit = async (values: AgencyFormValues) => {
     try {
-      console.log("Invoice Data:", values);
       let newUserData;
       let customerId;
 
