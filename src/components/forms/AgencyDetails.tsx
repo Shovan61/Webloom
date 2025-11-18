@@ -4,6 +4,7 @@ import { Agency } from "@/generated/prisma";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { email, z } from "zod";
 
 import {
   AlertDialog,
@@ -44,6 +45,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { NumberInput } from "@tremor/react";
 import {
   deleteAgencyFunction,
+  initUser,
   saveActivityLogsNotification,
   updateAgencyDetails,
 } from "@/lib/query";
@@ -65,7 +67,7 @@ function AgencyDetails({ data }: Props) {
       name: data?.name || "",
       companyEmail: data?.companyEmail || "",
       companyPhone: data?.companyPhone || "",
-      whiteLabel: data?.whiteLabel ?? false, 
+      whiteLabel: data?.whiteLabel ?? false,
       address: data?.address || "",
       city: data?.city || "",
       zipCode: data?.zipCode || "",
@@ -77,8 +79,44 @@ function AgencyDetails({ data }: Props) {
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = (data: AgencyFormValues) => {
-    console.log("Invoice Data:", data); // Log validated form data to the console
+  const onSubmit = async (values: AgencyFormValues) => {
+    try {
+      console.log("Invoice Data:", values);
+      let newUserData;
+      let customerId;
+
+      if (!data?.id) {
+        const bodyData = {
+          email: values.companyEmail,
+          name: values.name,
+          shipping: {
+            address: {
+              city: values.city,
+              country: values.country,
+              line1: values.address,
+              postal_code: values.zipCode,
+              state: values.state,
+            },
+            name: values.name,
+          },
+          address: {
+            city: values.city,
+            country: values.country,
+            line1: values.address,
+            postal_code: values.zipCode,
+            state: values.state,
+          },
+        };
+        // WIP custId
+        newUserData = await initUser({ role: "AGENCY_OWNER" });
+
+        if(!data?.customerId){
+          
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDeleteAgency = async () => {
