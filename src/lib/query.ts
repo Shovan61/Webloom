@@ -4,6 +4,40 @@ import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import { db } from "./db";
 import { Agency, Plan, User } from "@/generated/prisma";
 
+enum Icon {
+  settings = "settings",
+  chart = "chart",
+  calendar = "calendar",
+  check = "check",
+  chip = "chip",
+  compass = "compass",
+  database = "database",
+  flag = "flag",
+  home = "home",
+  info = "info",
+  link = "link",
+  lock = "lock",
+  messages = "messages",
+  notification = "notification",
+  payment = "payment",
+  power = "power",
+  receipt = "receipt",
+  sheild = "sheild",  
+  star = "star",
+  tune = "tune",
+  videorecorder = "videorecorder",
+  wallet = "wallet",
+  warning = "warning",
+  headphone = "headphone",
+  send = "send",
+  pipelines = "pipelines",
+  person = "person",
+  category = "category",
+  contact = "contact",
+  clipboardIcon = "clipboardIcon"
+}
+
+
 export const getAuthUserDetails = async () => {
   try {
     const user = await currentUser();
@@ -294,8 +328,9 @@ export const initUser = async (newuser: Partial<User>) => {
 };
 
 export const upsertAgency = async (agency: Agency, price?: Plan) => {
+  if (!agency.companyEmail) return null;
+
   try {
-    if (!agency.companyEmail) return null;
     const agencyDetails = await db.agency.upsert({
       where: {
         id: agency.id,
@@ -312,38 +347,40 @@ export const upsertAgency = async (agency: Agency, price?: Plan) => {
           create: [
             {
               name: "Dashboard",
-              icon: "category",
+              icon: Icon.category,
               link: `/agency/${agency.id}`,
             },
             {
               name: "Launchpad",
-              icon: "clipboardIcon",
+              icon: Icon.clipboardIcon,
               link: `/agency/${agency.id}/launchpad`,
             },
             {
               name: "Billing",
-              icon: "payment",
+              icon: Icon.payment,
               link: `/agency/${agency.id}/billing`,
             },
             {
               name: "Settings",
-              icon: "settings",
+              icon: Icon.settings,
               link: `/agency/${agency.id}/settings`,
             },
             {
               name: "Sub Accounts",
-              icon: "person",
+              icon: Icon.person,
               link: `/agency/${agency.id}/all-subaccounts`,
             },
             {
               name: "Team",
-              icon: "shield",
+              icon: Icon.sheild,
               link: `/agency/${agency.id}/team`,
             },
           ],
         },
       },
     });
+    console.log(agencyDetails, "logged");
+
     return agencyDetails;
   } catch (error) {
     console.log(error);

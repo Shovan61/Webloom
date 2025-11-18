@@ -111,10 +111,14 @@ function AgencyDetails({ data }: Props) {
         const custId = "";
         newUserData = await initUser({ role: "AGENCY_OWNER" });
 
-        if (!data?.customerId && !custId) return;
+        // if (!data?.customerId && !custId) {
+        //   toast.error("Can not find customer id!");
+        //   return;
+        // }
+
         const response = await upsertAgency({
           id: data?.id ? data?.id : v4(),
-          customerId: data?.customerId || custId || "",
+          customerId: v4(),
           address: values.address,
           city: values.city,
           agencyLogo: values?.agencyLogo,
@@ -131,10 +135,10 @@ function AgencyDetails({ data }: Props) {
           zipCode: values.zipCode,
         });
 
-        toast.success("Created successfully!");
-
         if (data?.id) return router.refresh();
         if (response) {
+          toast.success("Created Agency successfully!");
+          console.log(response, "=====response=====");
           return router.refresh();
         }
       }
