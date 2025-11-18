@@ -4,7 +4,6 @@ import { Agency } from "@/generated/prisma";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { email, z } from "zod";
 
 import {
   AlertDialog,
@@ -48,8 +47,10 @@ import {
   initUser,
   saveActivityLogsNotification,
   updateAgencyDetails,
+  upsertAgency,
 } from "@/lib/query";
 import { Spinner } from "../ui/spinner";
+import { v4 } from "uuid";
 
 type Props = {
   data?: Partial<Agency>;
@@ -108,14 +109,39 @@ function AgencyDetails({ data }: Props) {
           },
         };
         // WIP custId
+        const custId = "";
         newUserData = await initUser({ role: "AGENCY_OWNER" });
 
-        if(!data?.customerId){
-          
+        if (!data?.customerId && !custId) return;
+        const response = await upsertAgency({
+          id: data?.id ? data?.id : v4(),
+          customerId: data?.customerId || custId || "",
+          address: values.address,
+          city: values.city,
+          agencyLogo: values?.agencyLogo,
+          companyEmail: values.companyEmail,
+          companyPhone: values.companyPhone,
+          connectAccountId: "",
+          country: values.country,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          goal: 5,
+          name: values.name,
+          state: values.state,
+          whiteLabel: values.whiteLabel,
+          zipCode: values.zipCode,
+        });
+
+        toast.success("Created successfully!");
+
+        if (data?.id) return router.refresh();
+        if (response) {
+          return router.refresh();
         }
       }
     } catch (error) {
       console.log(error);
+      toast.error("Something Went Wrong!");
     }
   };
 
