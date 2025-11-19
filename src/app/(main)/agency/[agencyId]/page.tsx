@@ -1,13 +1,13 @@
 import React from "react";
 
 type Props = {
-  params: {
-    agencyId: string;
-  };
+  params: { agencyId: string };
 };
 
-function Page({ params: { agencyId } }: Props) {
+async function AgencyPage({ params }: Props) {
+  const { agencyId } = await params;
+
   return <div>{agencyId}</div>;
 }
 
-export default Page;
+export default AgencyPage;

@@ -22,7 +22,7 @@ enum Icon {
   payment = "payment",
   power = "power",
   receipt = "receipt",
-  sheild = "sheild",  
+  sheild = "sheild",
   star = "star",
   tune = "tune",
   videorecorder = "videorecorder",
@@ -34,9 +34,8 @@ enum Icon {
   person = "person",
   category = "category",
   contact = "contact",
-  clipboardIcon = "clipboardIcon"
+  clipboardIcon = "clipboardIcon",
 }
-
 
 export const getAuthUserDetails = async () => {
   try {
@@ -385,5 +384,26 @@ export const upsertAgency = async (agency: Agency, price?: Plan) => {
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong! upsertAgency");
+  }
+};
+
+export const getNotificationsAccessAndUser = async (agencyId: string) => {
+  try {
+    const response = await db.notification.findMany({
+      where: {
+        agencyId: agencyId,
+      },
+      include: {
+        User: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong! getNotificationsAccessAndUser");
   }
 };
