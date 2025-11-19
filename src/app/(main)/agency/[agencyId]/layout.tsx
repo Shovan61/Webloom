@@ -44,7 +44,7 @@ async function layout({ children, params }: Props) {
   return (
     <div className="h-screen overflow-hidden">
       <Sidebar id={params.agencyId} type="agency" />
-      <div className="md:pl-[300px]"></div>
+      <div className="md:pl-[300px]">{children}</div>
     </div>
   );
 }

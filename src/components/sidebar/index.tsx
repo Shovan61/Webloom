@@ -42,6 +42,7 @@ async function Sidebar({ id, type }: Props) {
       (p) => p.subAccountId === subaccount.id && p.access === true
     )
   );
+  
 
   return (
     <>
