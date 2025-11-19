@@ -22,11 +22,22 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import { Button } from "../ui/button";
-import { Menu } from "lucide-react";
+import { ChevronsUpDown, Compass, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AspectRatio } from "../ui/aspect-ratio";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command";
+import Link from "next/link";
 
 type Props = {
   defaultOpen?: boolean;
@@ -62,6 +73,7 @@ function MenuOptions({
   if (!isMounted) {
     return null;
   }
+  console.log(user);
 
   return (
     <>
@@ -93,7 +105,130 @@ function MenuOptions({
                 className="rounded-md object-contain"
               />
             </AspectRatio>
-            trst
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="w-full my-4 flex items-center justify-between py-8"
+                >
+                  <div className="flex items-center text-left gap-2">
+                    <Compass />
+                    <div className="flex flex-col">
+                      {details.name}
+                      <span className="text-gray-500 text-[9px] truncate">
+                        {details.address}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <ChevronsUpDown size={16} />
+                  </div>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                {
+                  <Command className="rounded-lg border shadow-md ">
+                    <CommandInput placeholder="Search Accounts..." />
+                    {(user?.role === "AGENCY_OWNER" ||
+                      user?.role === "AGENCY_ADMIN") &&
+                      user?.Agency && (
+                        <CommandGroup heading="Agency">
+                          <CommandItem className="my-2 text-gray-400 border p-2 rounded-md hover:bg-gray-500 cursor-pointer transition-all">
+                            {defaultOpen ? (
+                              <Link
+                                href={`/agency/${user.Agency.id}`}
+                                className="flex gap-4 w-full h-4"
+                              >
+                                <div className="relative w-60 flex justify-between items-center">
+                                  <Image
+                                    src={user?.Agency?.agencyLogo}
+                                    alt="agency-logo"
+                                    fill
+                                    className="rounded-md object-contain"
+                                  />
+                                  <div className="flex flex-col flex-1">
+                                    {user?.Agency?.name}
+                                  </div>
+                                </div>
+                              </Link>
+                            ) : (
+                              <SheetClose asChild>
+                                <Link
+                                  href={`/agency/${user.Agency.id}`}
+                                  className="flex gap-4 w-full h-4"
+                                >
+                                  <div className="relative w-60 flex justify-between items-center">
+                                    <Image
+                                      src={user?.Agency?.agencyLogo}
+                                      alt="agency-logo"
+                                      fill
+                                      className="rounded-md object-contain"
+                                    />
+                                    <div className="flex flex-col flex-1">
+                                      {user?.Agency?.name}
+                                    </div>
+                                  </div>
+                                </Link>
+                              </SheetClose>
+                            )}
+                          </CommandItem>
+                        </CommandGroup>
+                      )}
+                    <CommandGroup heading="Accounts">
+                      {subaccounts && subaccounts.length ? (
+                        subaccounts.map((subAcc) => (
+                          <CommandItem
+                            key={subAcc.id}
+                            className="my-2 text-gray-400 border p-2 rounded-md hover:bg-gray-500 cursor-pointer transition-all"
+                          >
+                            {defaultOpen ? (
+                              <Link
+                                href={`/subaccount/${subAcc.id}`}
+                                className="flex gap-4 w-full h-4"
+                              >
+                                <div className="relative w-60 flex justify-between items-center">
+                                  <Image
+                                    src={subAcc.subAccountLogo}
+                                    alt="subaccount-logo"
+                                    fill
+                                    className="rounded-md object-contain"
+                                  />
+                                  <div className="flex flex-col flex-1">
+                                    {subAcc.name}
+                                  </div>
+                                </div>
+                              </Link>
+                            ) : (
+                              <SheetClose asChild>
+                                <Link
+                                  href={`/subaccount/${subAcc.id}`}
+                                  className="flex gap-4 w-full h-4"
+                                >
+                                  <div className="relative w-60 flex justify-between items-center">
+                                    <Image
+                                      src={subAcc.subAccountLogo}
+                                      alt="subaccount-logo"
+                                      fill
+                                      className="rounded-md object-contain"
+                                    />
+                                    <div className="flex flex-col flex-1">
+                                      {subAcc.name}
+                                    </div>
+                                  </div>
+                                </Link>
+                              </SheetClose>
+                            )}
+                          </CommandItem>
+                        ))
+                      ) : (
+                        <span className="text-xs ">No Accounts found</span>
+                      )}
+                    </CommandGroup>
+                  </Command>
+                }
+              </PopoverContent>
+            </Popover>
           </div>
 
           <SheetFooter>
