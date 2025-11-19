@@ -24,7 +24,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "../ui/button";
-import { ChevronsUpDown, Compass, Menu } from "lucide-react";
+import { ChevronsUpDown, Compass, Menu, PlusCircleIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AspectRatio } from "../ui/aspect-ratio";
 import {
@@ -227,6 +227,12 @@ function MenuOptions({
                     </CommandGroup>
                   </Command>
                 }
+                {(user?.role === "AGENCY_ADMIN" ||
+                  user?.role === "AGENCY_OWNER") && (
+                  <Button className="w-full flex gap-2 mt-3 cursor-pointer">
+                    <PlusCircleIcon size={15} /> Create Sub-Account
+                  </Button>
+                )}
               </PopoverContent>
             </Popover>
           </div>
