@@ -96,6 +96,7 @@ function MenuOptions({
               : "inline-block md:hidden z-100 w-full"
           )}
         >
+          <SheetTitle>M</SheetTitle> 
           <div className="mt-5">
             <AspectRatio ratio={16 / 5}>
               <Image
