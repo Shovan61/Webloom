@@ -2,7 +2,7 @@
 
 import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import { db } from "./db";
-import { Agency, Plan, User } from "@/generated/prisma";
+import { Agency, Plan, SubAccount, User } from "@/generated/prisma";
 
 enum Icon {
   settings = "settings",
@@ -378,7 +378,6 @@ export const upsertAgency = async (agency: Agency, price?: Plan) => {
         },
       },
     });
-    console.log(agencyDetails, "logged");
 
     return agencyDetails;
   } catch (error) {
@@ -405,5 +404,23 @@ export const getNotificationsAccessAndUser = async (agencyId: string) => {
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong! getNotificationsAccessAndUser");
+  }
+};
+
+export const upsertSubAccount = async (subaccount: SubAccount) => {
+  try {
+    if (!subaccount.companyEmail)
+      throw new Error(
+        "Can not upsertSubAccount because no compmany email found!"
+      );
+
+      const agencyOwner = await db.user.findFirst({
+        where: {
+          
+        }
+      })
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong! upsertSubAccount");
   }
 };

@@ -38,6 +38,8 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 import Link from "next/link";
+import { useModal } from "@/providers/modal-provider";
+import CustomModal from "../global/custom-modal";
 
 type Props = {
   defaultOpen?: boolean;
@@ -62,6 +64,7 @@ function MenuOptions({
     () => (defaultOpen ? { open: true } : {}),
     [defaultOpen]
   );
+  const { setOpen } = useModal();
 
   const [isMounted, setisMounted] = useState<boolean>(false);
 
@@ -96,7 +99,7 @@ function MenuOptions({
               : "inline-block md:hidden z-100 w-full"
           )}
         >
-          <SheetTitle>M</SheetTitle> 
+          <SheetTitle></SheetTitle>
           <div className="mt-5">
             <AspectRatio ratio={16 / 5}>
               <Image
@@ -230,7 +233,19 @@ function MenuOptions({
                 }
                 {(user?.role === "AGENCY_ADMIN" ||
                   user?.role === "AGENCY_OWNER") && (
-                  <Button className="w-full flex gap-2 mt-3 cursor-pointer">
+                  <Button
+                    className="w-full flex gap-2 mt-3 cursor-pointer"
+                    onClick={() => {
+                      setOpen(
+                        <CustomModal
+                          title="Create A Subaccount"
+                          subheading="You can switch between your agency account and the subaccount from the sidebar"
+                        >
+
+                        </CustomModal>
+                      );
+                    }}
+                  >
                     <PlusCircleIcon size={15} /> Create Sub-Account
                   </Button>
                 )}
