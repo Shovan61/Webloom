@@ -15,7 +15,7 @@ type Props = {
   title: string;
   subheading: string;
   children: React.ReactNode;
-  defaultOpen: boolean;
+  defaultOpen?: boolean;
 };
 
 function CustomModal({ children, defaultOpen, subheading, title }: Props) {
@@ -23,10 +23,7 @@ function CustomModal({ children, defaultOpen, subheading, title }: Props) {
 
   return (
     <Dialog open={isOpen || defaultOpen} onOpenChange={setClose}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Open Dialog</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] overflow-scroll h-screen md:h-fit md:max-h-[700px]">
+      <DialogContent className="sm:max-w-[425px]  overflow-scroll h-screen md:h-fit md:max-h-[700px]">
         <DialogHeader className="pt-8 text-left">
           <DialogTitle className="text-2xl font-bold">{title}</DialogTitle>
           <DialogDescription>{subheading}</DialogDescription>

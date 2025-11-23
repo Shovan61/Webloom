@@ -1,6 +1,6 @@
 "use client";
 
-import { Agency } from "@/generated/prisma";
+import { Agency, SubAccount } from "@/generated/prisma";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,7 +28,10 @@ import {
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { AgencyFormValues, AgencySchema } from "@/lib/zod-schema/zod-schema";
+import {
+  SubAccountSchema,
+  SubAccountFormValues,
+} from "@/lib/zod-schema/zod-schema";
 import {
   Form,
   FormControl,
@@ -43,45 +46,48 @@ import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { NumberInput } from "@tremor/react";
 import {
-  deleteAgencyFunction,
+  deleteSubaccountFunction,
   saveActivityLogsNotification,
   updateAgencyDetails,
-  upsertAgency,
+  upsertSubAccount,
 } from "@/lib/query";
 import { Spinner } from "../ui/spinner";
 import { v4 } from "uuid";
+import { useModal } from "@/providers/modal-provider";
 
 type Props = {
-  data?: Partial<Agency>;
+  data?: Partial<SubAccount>;
+  agencyDetails: Agency;
+  userId: string;
+  userName: string;
 };
 
-function SubaccountDetails({ data }: Props) {
+function SubaccountDetails({ data, agencyDetails, userId, userName }: Props) {
   const router = useRouter();
+  const { setClose } = useModal();
 
   const [deleteSubAccount, setDeleteSubaccount] = useState<boolean>(false);
 
-  const form = useForm<AgencyFormValues>({
+  const form = useForm<SubAccountFormValues>({
     mode: "onChange",
-    resolver: zodResolver(AgencySchema),
+    resolver: zodResolver(SubAccountSchema),
     defaultValues: {
       name: data?.name || "",
       companyEmail: data?.companyEmail || "",
       companyPhone: data?.companyPhone || "",
-      whiteLabel: data?.whiteLabel ?? false,
       address: data?.address || "",
       city: data?.city || "",
       zipCode: data?.zipCode || "",
       state: data?.state || "",
       country: data?.country || "",
-      agencyLogo: data?.agencyLogo || "",
+      subaccountLogo: data?.subAccountLogo || "",
     },
   });
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = async (values: AgencyFormValues) => {
+  const onSubmit = async (values: SubAccountFormValues) => {
     try {
-
       let customerId;
 
       if (!data?.id) {
@@ -106,31 +112,22 @@ function SubaccountDetails({ data }: Props) {
             state: values.state,
           },
         };
-        // WIP custId
-        const custId = "";
-
-        // if (!data?.customerId && !custId) {
-        //   toast.error("Can not find customer id!");
-        //   return;
-        // }
-
 
         const response = await upsertSubAccount({
           id: data?.id ? data?.id : v4(),
-          customerId: v4(),
           address: values.address,
           city: values.city,
-          agencyLogo: values?.agencyLogo,
+          subAccountLogo: values?.subaccountLogo,
           companyEmail: values.companyEmail,
           companyPhone: values.companyPhone,
           connectAccountId: "",
           country: values.country,
           createdAt: new Date(),
           updatedAt: new Date(),
-          goal: 5,
+          goal: 5000,
           name: values.name,
           state: values.state,
-          whiteLabel: values.whiteLabel,
+          agencyId: agencyDetails.id,
           zipCode: values.zipCode,
         });
 
@@ -138,6 +135,12 @@ function SubaccountDetails({ data }: Props) {
         if (response) {
           toast.success("Created Sub Agency successfully!");
           console.log(response, "=====response=====");
+          await saveActivityLogsNotification({
+            agencyId: response.agencyId,
+            description: `${userName} | updated sub account | ${response.name}`,
+            subaccountId: response.id,
+          });
+          setClose();
           return router.refresh();
         }
       }
@@ -155,12 +158,6 @@ function SubaccountDetails({ data }: Props) {
     // WIP: discontinue the subscription
     try {
       const response = await deleteSubaccountFunction(data.id);
-
-      if (response.status === 200) {
-        toast.success("Succesfully deleted!");
-      } else {
-        toast.error("Failed to Delete!");
-      }
     } catch (error) {
       console.log(error);
       toast.error("Something Went Wrong!");
@@ -191,13 +188,13 @@ function SubaccountDetails({ data }: Props) {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
-                name="agencyLogo"
+                name="subaccountLogo"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Agency Logo</FormLabel>
                     <FormControl>
                       <FileUpload
-                        apiEndPoint="agencylogo"
+                        apiEndPoint="subaccountLogo"
                         onChange={field.onChange}
                         value={field.value}
                       />
@@ -262,42 +259,7 @@ function SubaccountDetails({ data }: Props) {
                   </FormItem>
                 )}
               />
-              {/* White Label */}
 
-              <FormField
-                control={form.control}
-                name="whiteLabel"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Whitelabel</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        value={field.value ? "true" : "false"} // Set value as 'true' or 'false' based on boolean
-                        onValueChange={(value) =>
-                          field.onChange(value === "true")
-                        } // Set 'true' or 'false' based on radio selection
-                      >
-                        <div className="flex space-x-4">
-                          <div>
-                            <RadioGroupItem value="true" id="whitelabel-yes" />
-                            <label htmlFor="whitelabel-yes">Yes</label>
-                          </div>
-                          <div>
-                            <RadioGroupItem value="false" id="whitelabel-no" />
-                            <label htmlFor="whitelabel-no">No</label>
-                          </div>
-                        </div>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormDescription className="w-xl">
-                      Turning on Whitelabel mode will show your agency logo to
-                      all sub-accounts by default. You can overwrite this
-                      functionality through sub-account settings.
-                    </FormDescription>
-                    <FormMessage className="text-rose-50" />
-                  </FormItem>
-                )}
-              />
               {/* Address */}
               <FormField
                 control={form.control}
