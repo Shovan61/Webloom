@@ -176,10 +176,10 @@ function SubaccountDetails({ data, agencyDetails, userId, userName }: Props) {
     <AlertDialog>
       <Card className="w-full mt-8 border-0 shadow-xl">
         <CardHeader>
-          <CardTitle className="text-xl">Agency Information</CardTitle>
+          <CardTitle className="text-xl">Subaccount Information</CardTitle>
           <CardDescription>
             <span className="text-xs">
-              Fill out Agency information to create one.
+              Fill out Subaccount information to create one.
             </span>
           </CardDescription>
         </CardHeader>
@@ -191,7 +191,7 @@ function SubaccountDetails({ data, agencyDetails, userId, userName }: Props) {
                 name="subaccountLogo"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Agency Logo</FormLabel>
+                    <FormLabel>Sub Account Logo</FormLabel>
                     <FormControl>
                       <FileUpload
                         apiEndPoint="subaccountLogo"
@@ -204,13 +204,13 @@ function SubaccountDetails({ data, agencyDetails, userId, userName }: Props) {
                 )}
               />
               <div className="flex flex-col md:flex-row gap-4">
-                {/* Agency Name */}
+                {/* Subaccount Name */}
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Agency Name</FormLabel>
+                      <FormLabel>Subaccount Name</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="New Agency Name"
@@ -223,13 +223,13 @@ function SubaccountDetails({ data, agencyDetails, userId, userName }: Props) {
                     </FormItem>
                   )}
                 />
-                {/* Agency Email */}
+                {/* Subaccount Email */}
                 <FormField
                   control={form.control}
                   name="companyEmail"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Agency Email</FormLabel>
+                      <FormLabel>Subaccount Email</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="New Agency Name"
@@ -244,13 +244,13 @@ function SubaccountDetails({ data, agencyDetails, userId, userName }: Props) {
                 />
               </div>
 
-              {/* Agency Phone */}
+              {/* Subaccount Phone */}
               <FormField
                 control={form.control}
                 name="companyPhone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Agency Phone</FormLabel>
+                    <FormLabel>Subaccount Phone</FormLabel>
                     <FormControl>
                       <Input placeholder="New Agency Phone" {...field} />
                     </FormControl>
@@ -373,7 +373,7 @@ function SubaccountDetails({ data, agencyDetails, userId, userName }: Props) {
                 className="cursor-pointer hover:bg-blue-700 transition-all"
               >
                 {isLoading && <Spinner />}
-                Save Agency Information
+                Save Subaccount Information
               </Button>
             </form>
           </Form>

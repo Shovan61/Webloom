@@ -35,13 +35,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
 import Link from "next/link";
 import { useModal } from "@/providers/modal-provider";
 import CustomModal from "../global/custom-modal";
 import SubaccountDetails from "../forms/sub-account-details";
+import { Separator } from "../ui/separator";
+import { icons } from "@/lib/constants";
 
 type Props = {
   defaultOpen?: boolean;
@@ -131,7 +131,7 @@ function MenuOptions({
                   </div>
                 </Button>
               </PopoverTrigger>
-              <PopoverContent>
+              <PopoverContent className="relative z-[9999]">
                 {
                   <Command className="rounded-lg border shadow-md ">
                     <CommandInput placeholder="Search Accounts..." />
@@ -257,6 +257,41 @@ function MenuOptions({
                 )}
               </PopoverContent>
             </Popover>
+            <p className="text-gray-600 text-xs mb-2">MENU LINKS</p>
+            <Separator className="mb-4" />
+            <nav className="relative">
+              <Command className="rounded-lg border shadow-md">
+                <CommandInput placeholder="Type a command or search..." />
+                <CommandList>
+                  <CommandEmpty>No results found.</CommandEmpty>
+                  <CommandGroup className="overflow-visible">
+                    {sidebarOptions.map((sidebarOption) => {
+                      let value;
+                      const result = icons.find(
+                        (cur) => cur.value === sidebarOption.icon
+                      );
+                      if (result) {
+                        value = <result.path />;
+                      }
+                      return (
+                        <CommandItem
+                          key={sidebarOption.id}
+                          className="md:w-8 w-full"
+                        >
+                          <Link
+                            href={sidebarOption.link}
+                            className="flex items-center gap-2 hover:bg-transparent rounded-md transition-all md:w-full w-[320px]"
+                          >
+                            {value}
+                            <span>{sidebarOption.name}</span>
+                          </Link>
+                        </CommandItem>
+                      );
+                    })}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </nav>
           </div>
 
           <SheetFooter>
