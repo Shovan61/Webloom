@@ -131,7 +131,7 @@ function MenuOptions({
                   </div>
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="relative z-[9999]">
+              <PopoverContent className="relative z-[9999]! bg-black!">
                 {
                   <Command className="rounded-lg border shadow-md ">
                     <CommandInput placeholder="Search Accounts..." />
@@ -276,7 +276,7 @@ function MenuOptions({
                       return (
                         <CommandItem
                           key={sidebarOption.id}
-                          className="md:w-8 w-full"
+                          className="w-full hover:bg-blue-500!"
                         >
                           <Link
                             href={sidebarOption.link}
