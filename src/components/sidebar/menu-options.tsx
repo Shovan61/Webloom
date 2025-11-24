@@ -94,7 +94,7 @@ function MenuOptions({
           side="left"
           showX={!defaultOpen}
           className={cn(
-            "bg-[#010203]/80 backdrop-blur-xl fixed top-0 border-r p-6 ",
+            "bg-[#010203]/80 backdrop-blur-xl fixed top-0  p-6 ",
             defaultOpen
               ? "hidden md:inline-block z-0 w-[300px]"
               : "inline-block md:hidden z-100 w-full"
@@ -133,13 +133,13 @@ function MenuOptions({
               </PopoverTrigger>
               <PopoverContent className="relative z-[9999]! bg-black!">
                 {
-                  <Command className="rounded-lg border shadow-md ">
+                  <Command className="rounded-lg  shadow-md ">
                     <CommandInput placeholder="Search Accounts..." />
                     {(user?.role === "AGENCY_OWNER" ||
                       user?.role === "AGENCY_ADMIN") &&
                       user?.Agency && (
                         <CommandGroup heading="Agency">
-                          <CommandItem className="my-2 text-gray-400 border p-2 rounded-md hover:bg-gray-500 cursor-pointer transition-all">
+                          <CommandItem className="my-2 text-gray-400  p-2 rounded-md hover:bg-gray-500 cursor-pointer transition-all">
                             {defaultOpen ? (
                               <Link
                                 href={`/agency/${user.Agency.id}`}
@@ -185,7 +185,7 @@ function MenuOptions({
                         subaccounts.map((subAcc) => (
                           <CommandItem
                             key={subAcc.id}
-                            className="my-2 text-gray-400 border p-2 rounded-md hover:bg-gray-500 cursor-pointer transition-all"
+                            className="my-2 text-gray-400  p-2 rounded-md hover:bg-gray-500 cursor-pointer transition-all"
                           >
                             {defaultOpen ? (
                               <Link
@@ -260,7 +260,7 @@ function MenuOptions({
             <p className="text-gray-600 text-xs mb-2">MENU LINKS</p>
             <Separator className="mb-4" />
             <nav className="relative">
-              <Command className="rounded-lg border shadow-md">
+              <Command className="rounded-lg  shadow-md">
                 <CommandInput placeholder="Type a command or search..." />
                 <CommandList>
                   <CommandEmpty>No results found.</CommandEmpty>
