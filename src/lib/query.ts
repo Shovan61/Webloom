@@ -1,6 +1,10 @@
 "use server";
 
-import { clerkClient, currentUser } from "@clerk/nextjs/server";
+import {
+  clerkClient,
+  currentUser,
+  User as AuthUser,
+} from "@clerk/nextjs/server";
 import { db } from "./db";
 import { Agency, Plan, SubAccount, User } from "@/generated/prisma";
 import { v4 } from "uuid";
@@ -497,7 +501,7 @@ export const upsertSubAccount = async (subaccount: SubAccount) => {
       },
     });
 
-    return response
+    return response;
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong! upsertSubAccount");
@@ -509,5 +513,36 @@ export const deleteSubaccountFunction = async (subAccountId: string) => {
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong! deleteSubaccountFunction");
+  }
+};
+
+export const getUserDetailsByAuthEmail = async (authUser: AuthUser) => {
+  try {
+    const response = await db.user.findUnique({
+      where: {
+        email: authUser.emailAddresses[0].emailAddress,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong! getUserDetailsByAuthEmail");
+  }
+};
+
+export const getAgencyDetails = async (agencyId: string) => {
+  try {
+    const response = await db.agency.findUnique({
+      where: { id: agencyId },
+      include: {
+        SubAccount: true,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong! getAgencyDetails");
   }
 };
