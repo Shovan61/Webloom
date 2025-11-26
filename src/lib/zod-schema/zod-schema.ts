@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { email, z } from "zod";
 
 export const AgencySchema = z.object({
   name: z.string().min(2, "Agency name must be atleast two charecters"),
@@ -15,7 +15,6 @@ export const AgencySchema = z.object({
 
 export type AgencyFormValues = z.infer<typeof AgencySchema>;
 
-
 export const SubAccountSchema = z.object({
   name: z.string().min(2, "Sub-account name must be atleast two charecters"),
   companyEmail: z.email("Invalid email address"),
@@ -28,5 +27,18 @@ export const SubAccountSchema = z.object({
   subaccountLogo: z.string().min(1, "Subaccount` Logo Required"),
 });
 
-
 export type SubAccountFormValues = z.infer<typeof SubAccountSchema>;
+
+export const UserDetailsSchema = z.object({
+  name: z.string().min(1, "User name must be atleast two charecters"),
+  email: z.email("Invalid email address"),
+  avatarurl: z.string(),
+  role: z.enum([
+    "AGENCY_OWNER",
+    "AGENCY_ADMIN",
+    "SUBACCOUNT_USER",
+    "SUBACCOUNT_GUEST",
+  ]),
+});
+
+export type UserDetailsFormValues = z.infer<typeof UserDetailsSchema>;

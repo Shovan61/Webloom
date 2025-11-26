@@ -546,3 +546,25 @@ export const getAgencyDetails = async (agencyId: string) => {
     throw new Error("Something went wrong! getAgencyDetails");
   }
 };
+
+export const getUserPermissions = async (userId: string) => {
+  try {
+    const response = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        Permissions: {
+          include: {
+            SubAccount: true,
+          },
+        },
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong! getUserPermissions");
+  }
+};

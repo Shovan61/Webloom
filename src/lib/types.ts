@@ -1,16 +1,24 @@
-import { Role, Notification } from "@/generated/prisma";
+import { Role, Notification, Prisma } from "@/generated/prisma";
+import { getAuthUserDetails, getUserPermissions } from "./query";
 
 export type NotificationWithUser =
-    | ({
-          User: {
-              id: string;
-              name: string;
-              avatarUrl: string;
-              email: string;
-              createdAt: Date;
-              updatedAt: Date;
-              role: Role;
-              agencyId: string | null;
-          };
-      } & Notification)[]
-    | undefined;
+  | ({
+      User: {
+        id: string;
+        name: string;
+        avatarUrl: string;
+        email: string;
+        createdAt: Date;
+        updatedAt: Date;
+        role: Role;
+        agencyId: string | null;
+      };
+    } & Notification)[]
+  | undefined;
+
+export type UserWithPermissionsAndSubAccounts = Prisma.PromiseReturnType<
+  typeof getUserPermissions
+>;
+
+export type AuthUSerWithAgencySigebarOptionsSubAccounts =
+  Prisma.PromiseReturnType<typeof getAuthUserDetails>;
