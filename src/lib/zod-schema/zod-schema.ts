@@ -32,7 +32,7 @@ export type SubAccountFormValues = z.infer<typeof SubAccountSchema>;
 export const UserDetailsSchema = z.object({
   name: z.string().min(1, "User name must be atleast two charecters"),
   email: z.email("Invalid email address"),
-  avatarurl: z.string(),
+  avatarUrl: z.string(),
   role: z.enum([
     "AGENCY_OWNER",
     "AGENCY_ADMIN",

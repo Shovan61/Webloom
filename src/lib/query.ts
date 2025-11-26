@@ -532,6 +532,8 @@ export const getUserDetailsByAuthEmail = async (authUser: AuthUser) => {
 };
 
 export const getAgencyDetails = async (agencyId: string) => {
+  console.log(agencyId,'agencyId==================');
+  
   try {
     const response = await db.agency.findUnique({
       where: { id: agencyId },

@@ -1,4 +1,5 @@
 import AgencyDetails from "@/components/forms/AgencyDetails";
+import UserDetails from "@/components/forms/user-details";
 import { getAgencyDetails, getUserDetailsByAuthEmail } from "@/lib/query";
 import { currentUser } from "@clerk/nextjs/server";
 import React from "react";
@@ -8,6 +9,7 @@ type Props = {
 };
 
 async function SettingsPage({ params }: Props) {
+  const { agencyId } = await params;
   const authUser = await currentUser();
   if (!authUser) return null;
 
@@ -15,7 +17,7 @@ async function SettingsPage({ params }: Props) {
 
   if (!userDetails) return null;
 
-  const agencyDetails = await getAgencyDetails(params.agencyId);
+  const agencyDetails = await getAgencyDetails(agencyId);
 
   if (!agencyDetails) return null;
 
@@ -24,7 +26,7 @@ async function SettingsPage({ params }: Props) {
   return (
     <div className="flex md:flex-row flex-col gap-4">
       <AgencyDetails data={agencyDetails} />
-      {/* <UserDetails /> */}
+      <UserDetails id={authUser.id} subAccounts={subAccounts} />
     </div>
   );
 }
