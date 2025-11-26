@@ -6,7 +6,7 @@ import {
 } from "@/lib/types";
 import { useModal } from "@/providers/modal-provider";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   Card,
@@ -40,6 +40,7 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
+import { getAuthUserDetails, updateUser } from "@/lib/query";
 
 type Props = {
   id: string;
@@ -74,11 +75,44 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
 
   const onSubmit = async (values: UserDetailsFormValues) => {
     try {
+      if (!id) {
+        toast.error("ID not found!");
+        return;
+      }
+
+      if (userData || data?.user) {
+        const updatedUser = await updateUser(values);
+      }
     } catch (error) {
       console.log(error);
       toast.error("Something Went Wrong!");
     }
   };
+
+  const fetchDetails = async () => {
+    const response = await getAuthUserDetails();
+    if (response) setauthUserData(response);
+  };
+
+  const handleChangePermission = async () => {
+    try {
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchDetails();
+  }, [data]);
+
+  useEffect(() => {
+    if (data.user) {
+      form.reset();
+    }
+
+    if (userData) {
+      form.reset(userData);
+    }
+  }, [userData, data]);
 
   return (
     <Card className="w-full border-none shadow-xl">

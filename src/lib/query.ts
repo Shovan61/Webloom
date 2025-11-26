@@ -532,8 +532,6 @@ export const getUserDetailsByAuthEmail = async (authUser: AuthUser) => {
 };
 
 export const getAgencyDetails = async (agencyId: string) => {
-  console.log(agencyId,'agencyId==================');
-  
   try {
     const response = await db.agency.findUnique({
       where: { id: agencyId },
@@ -568,5 +566,21 @@ export const getUserPermissions = async (userId: string) => {
   } catch (error) {
     console.log(error);
     throw new Error("Something went wrong! getUserPermissions");
+  }
+};
+
+export const updateUser = async (user: Partial<User>) => {
+  try {
+    const reponse = await db.user.update({
+      where: {
+        email: user.email,
+      },
+      data: { ...user },
+    });
+
+    return reponse;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong! updateUser");
   }
 };
