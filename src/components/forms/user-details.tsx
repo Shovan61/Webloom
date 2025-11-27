@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -40,7 +41,12 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
-import { getAuthUserDetails, updateUser } from "@/lib/query";
+import {
+  getAuthUserDetails,
+  getUserPermissions,
+  updateUser,
+} from "@/lib/query";
+import { Separator } from "../ui/separator";
 
 type Props = {
   id: string;
@@ -54,7 +60,7 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
     useState<UserWithPermissionsAndSubAccounts>(null);
   const { setClose, data } = useModal();
 
-    const [roleState, setRoleState] = useState("");
+  const [roleState, setRoleState] = useState("");
   const [loadingPermission, setloadingPermission] = useState(false);
   const [authUserData, setauthUserData] =
     useState<AuthUSerWithAgencySigebarOptionsSubAccounts | null>(null);
@@ -99,6 +105,11 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
     } catch (error) {}
   };
 
+  const getPermission = async (id: string) => {
+    const permission = await getUserPermissions(id);
+    setsubAccountPermissions(permission);
+  };
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchDetails();
@@ -113,6 +124,13 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
       form.reset(userData);
     }
   }, [userData, data]);
+
+  useEffect(() => {
+    if (!data?.user?.id) return;
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    getPermission(data?.user?.id);
+  }, [userData, form]);
 
   return (
     <Card className="w-full border-none shadow-xl">
@@ -180,7 +198,7 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
               control={form.control}
               name="role"
               render={({ field }) => (
-                <FormItem className="flex-1 w-full" >
+                <FormItem className="flex-1 w-full">
                   <FormLabel>User Role</FormLabel>
                   <Select
                     defaultValue={field.value}
@@ -226,9 +244,30 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={form.formState.isSubmitting}
+            >
               {form.formState.isSubmitting ? <Spinner /> : "Save User Details"}
             </Button>
+            {authUserData?.role === "AGENCY_OWNER" && (
+              <div>
+                <Separator className="my-4" />
+                <FormLabel>User Permission</FormLabel>
+                <FormDescription className="mb-4">
+                  You can give Sub Account access to team member by turning on
+                  access control for each Sub Account. This is only visible to
+                  agency owners
+                </FormDescription>
+                <div className="flex flex-col gap-4">
+                  {/* {subAccounts?.map((subAcc) => {
+                    const subAccountPermissionDetails =
+                      subAccountPermissions?.Permissions.find(p);
+                  })} */}
+                </div>
+              </div>
+            )}
           </form>
         </Form>
       </CardContent>
