@@ -54,7 +54,7 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
     useState<UserWithPermissionsAndSubAccounts>(null);
   const { setClose, data } = useModal();
 
-  const [roleState, setroleState] = useState("");
+    const [roleState, setRoleState] = useState("");
   const [loadingPermission, setloadingPermission] = useState(false);
   const [authUserData, setauthUserData] =
     useState<AuthUSerWithAgencySigebarOptionsSubAccounts | null>(null);
@@ -180,7 +180,7 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
               control={form.control}
               name="role"
               render={({ field }) => (
-                <FormItem className="flex-1">
+                <FormItem className="flex-1 w-full" >
                   <FormLabel>User Role</FormLabel>
                   <Select
                     defaultValue={field.value}
@@ -190,11 +190,11 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
                         value === "SUBACCOUNT_USER" ||
                         value === "SUBACCOUNT_GUEST"
                       ) {
-                        // setRoleState(
-                        //   "You need to have subaccounts to assign Subaccount access to team members"
-                        // );
+                        setRoleState(
+                          "You need to have subaccounts to assign Subaccount access to team members"
+                        );
                       } else {
-                        // setRoleState("");
+                        setRoleState("");
                       }
                       field.onChange(value);
                     }}
@@ -226,7 +226,7 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={form.formState.isSubmitting}>
+            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? <Spinner /> : "Save User Details"}
             </Button>
           </form>
