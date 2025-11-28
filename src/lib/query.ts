@@ -584,3 +584,31 @@ export const updateUser = async (user: Partial<User>) => {
     throw new Error("Something went wrong! updateUser");
   }
 };
+
+export const changeUserPermission = async (
+  permissionId: string,
+  userEmail: string,
+  subAccountId: string,
+  permission: boolean
+) => {
+  try {
+    const response = await db.permissions.upsert({
+      where: {
+        id: permissionId,
+      },
+      update: {
+        access: permission,
+      },
+      create: {
+        access: permission,
+        email: userEmail,
+        subAccountId: subAccountId,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong! changeUserPermission");
+  }
+};

@@ -42,11 +42,15 @@ import {
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
 import {
+  changeUserPermission,
   getAuthUserDetails,
   getUserPermissions,
+  saveActivityLogsNotification,
   updateUser,
 } from "@/lib/query";
 import { Separator } from "../ui/separator";
+import { v4 } from "uuid";
+import { Switch } from "../ui/switch";
 
 type Props = {
   id: string;
@@ -100,9 +104,60 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
     if (response) setauthUserData(response);
   };
 
-  const handleChangePermission = async () => {
+  const handleChangePermission = async (
+    subAccountId: string,
+    value: boolean,
+    permissionId: string | undefined
+  ) => {
+    if (!data?.user?.email) {
+      toast.error("Email Required");
+      return;
+    }
     try {
-    } catch (error) {}
+      setloadingPermission(true);
+      const response = await changeUserPermission(
+        permissionId ? permissionId : v4(),
+        data?.user?.email,
+        subAccountId,
+        value
+      );
+      if (type === "agency") {
+        await saveActivityLogsNotification({
+          agencyId: authUserData?.Agency?.id,
+          description: `Gave ${userData?.name} access to | ${
+            subAccountPermissions?.Permissions.find(
+              (p) => p.subAccountId === subAccountId
+            )?.SubAccount.name
+          }`,
+          subaccountId: subAccountPermissions?.Permissions.find(
+            (p) => p.subAccountId === subAccountId
+          )?.SubAccount.id,
+        });
+      }
+
+      if (response) {
+        toast.success("The request was successfully");
+        if (subAccountPermissions) {
+          setsubAccountPermissions((prev) => {
+            if (!prev) return prev;
+
+            return {
+              Permissions: prev.Permissions.map((p) => {
+                if (p.subAccountId === subAccountId) {
+                  return { ...p, access: !p.access };
+                }
+                return p;
+              }),
+            };
+          });
+        }
+      } else {
+        toast.error("Could not update permissions");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong!");
+    }
   };
 
   const getPermission = async (id: string) => {
@@ -261,10 +316,47 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
                   agency owners
                 </FormDescription>
                 <div className="flex flex-col gap-4">
-                  {/* {subAccounts?.map((subAcc) => {
-                    const subAccountPermissionDetails =
-                      subAccountPermissions?.Permissions.find(p);
-                  })} */}
+                  {authUserData?.role === "AGENCY_OWNER" && (
+                    <div>
+                      <Separator className="my-4" />
+                      <FormLabel>User Permission</FormLabel>
+                      <FormDescription className="mb-4">
+                        You can give Sub Account access to team member by
+                        turning on access control for each Sub Account. This is
+                        only visible to agency owners
+                      </FormDescription>
+                      <div className="flex flex-col gap-4">
+                        {subAccounts?.map((subAccount) => {
+                          const subAccountPermissionsDetails =
+                            subAccountPermissions?.Permissions.find(
+                              (p) => p.subAccountId === subAccount.id
+                            );
+
+                          return (
+                            <div
+                              key={subAccount.id}
+                              className="flex items-center justify-between rounded-lg border p-4"
+                            >
+                              <div>
+                                <p>{subAccount.name}</p>
+                              </div>
+                              <Switch
+                                disabled={loadingPermission}
+                                checked={subAccountPermissionsDetails?.access}
+                                onCheckedChange={(permission) =>
+                                  handleChangePermission(
+                                    subAccount.id,
+                                    permission,
+                                    subAccountPermissionsDetails?.id
+                                  )
+                                }
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
