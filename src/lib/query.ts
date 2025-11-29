@@ -626,3 +626,22 @@ export const changeUserPermission = async (
     throw new Error("Something went wrong! changeUserPermission");
   }
 };
+
+
+export const getSubAccountDetails = async (subaccountId: string) => {
+    const response = await db.subAccount.findUnique({
+        where: { id: subaccountId },
+    });
+
+    return response;
+};
+
+export const deleteSubAccount = async (subaccountId: string) => {
+    const response = await db.subAccount.delete({
+        where: {
+            id: subaccountId,
+        },
+    });
+
+    return response;
+};
