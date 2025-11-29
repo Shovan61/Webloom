@@ -547,6 +547,20 @@ export const getAgencyDetails = async (agencyId: string) => {
   }
 };
 
+export const getAgencyInfo = async (agencyId: string)  => {
+try {
+  const response = await db.agency.findUnique({
+    where: {
+      id: agencyId
+    }
+  })
+  return response
+} catch (error) {
+  console.log(error);
+    throw new Error("Something went wrong! getAgencyInfo");
+}
+}
+
 export const getUserPermissions = async (userId: string) => {
   try {
     const response = await db.user.findUnique({
