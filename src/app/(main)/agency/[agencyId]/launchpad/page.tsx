@@ -1,0 +1,141 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { db } from "@/lib/db";
+import { getAgencyDetails } from "@/lib/query";
+import { Spinner } from "@/components/ui/spinner";
+
+type Props = {
+  params: {
+    agencyId: string;
+  };
+  searchparams: {
+    code: string;
+  };
+};
+
+function LaunchPadPage({ params, searchparams }: Props) {
+  const [agencyDetails, setagencyDetails] = useState<any | null>(null);
+  const [isLoading, setisLoading] = useState(false);
+
+  const agencyDetailsFunction = async () => {
+
+    try {
+      setisLoading(true)
+      const response = await getAgencyDetails(params.agencyId);
+      setagencyDetails(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setisLoading(false)
+    }
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability, react-hooks/set-state-in-effect
+    agencyDetailsFunction();
+  }, []);
+
+ 
+
+  return (
+    <div className="flex flex-col justify-center items-center">
+      <div className="w-full h-full max-x-[800px]">
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full">
+            <Spinner />
+          </div>
+        ) : (
+          <Card className="border-none">
+            <CardHeader>
+              <CardTitle>Lets get started</CardTitle>
+              <CardDescription>
+                Follow the steps below to get your account setup
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
+                <div className="flex md:items-center gap-4 flex-col md:!flex-row">
+                  <Image
+                    src="/appstore.png"
+                    alt="app logo"
+                    height={80}
+                    width={80}
+                    className="rounded-md object-contain"
+                  />
+                  <p> Save the website as a shortcut on your mobile device</p>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
+                <div className="flex md:items-center gap-4 flex-col md:!flex-row">
+                  <Image
+                    src="/stripelogo.png"
+                    alt="app logo"
+                    height={80}
+                    width={80}
+                    className="rounded-md object-contain"
+                  />
+                  <p>
+                    Connect your stripe account to accept payments and see your
+                    dashboard.
+                  </p>
+                </div>
+                {/* {agencyDetails.connectAccountId || connectedStripeAccount ? (
+                <CheckCircleIcon
+                  size={50}
+                  className=" text-primary p-2 flex-shrink-0"
+                />
+              ) : (
+                <Link
+                  className="bg-primary py-2 px-4 rounded-md text-white"
+                  href={stripeOAuthLink}
+                >
+                  Start
+                </Link>
+              )} */}
+              </div>
+
+              <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
+                <div className="flex md:items-center gap-4 flex-col md:!flex-row">
+                  {/* <Image
+                  src={agencyDetails.agencyLogo}
+                  alt="app logo"
+                  height={80}
+                  width={80}
+                  className="rounded-md object-contain"
+                /> */}
+                  <p> Fill in all your bussiness details</p>
+                </div>
+                {/* {allDetailsExist ? (
+                <CheckCircleIcon
+                  size={50}
+                  className="text-primary p-2 flex-shrink-0"
+                />
+              ) : (
+                <Link
+                  className="bg-primary py-2 px-4 rounded-md text-white"
+                  href={`/agency/${params.agencyId}/settings`}
+                >
+                  Start
+                </Link>
+              )} */}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default LaunchPadPage;

@@ -51,6 +51,7 @@ import {
 import { Separator } from "../ui/separator";
 import { v4 } from "uuid";
 import { Switch } from "../ui/switch";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 type Props = {
   id: string;
@@ -316,6 +317,74 @@ function UserDetails({ id, subAccounts, type, userData }: Props) {
                   agency owners
                 </FormDescription>
                 <div className="flex flex-col gap-4">
+                  {/* {authUserData?.role === "AGENCY_OWNER" && (
+                    <div>
+                      <Separator className="my-4" />
+                      <FormLabel>User Permission</FormLabel>
+                      <FormDescription className="mb-4">
+                        You can give Sub Account access to team member by
+                        turning on access control for each Sub Account. This is
+                        only visible to agency owners
+                      </FormDescription>
+                      <div className="flex flex-col gap-4">
+                        {subAccounts?.map((subAccount) => {
+                          const subAccountPermissionsDetails =
+                            subAccountPermissions?.Permissions.find(
+                              (p) => p.subAccountId === subAccount.id
+                            );
+
+                          return (
+                            <div
+                              key={subAccount.id}
+                              className="flex items-center justify-between rounded-lg border p-4"
+                            >
+                              <div>
+                                <p>{subAccount.name}</p>
+                              </div>
+                              <RadioGroup
+                                disabled={loadingPermission}
+                                value={
+                                  subAccountPermissionsDetails?.access
+                                    ? "yes"
+                                    : "no"
+                                }
+                                onValueChange={(value) =>
+                                  handleChangePermission(
+                                    subAccount.id,
+                                    value === "yes",
+                                    subAccountPermissionsDetails?.id
+                                  )
+                                }
+                                className="flex items-center gap-4"
+                              >
+                                <div className="flex items-center space-x-2">
+                                  <RadioGroupItem
+                                    value="yes"
+                                    id={`access-yes-${subAccount.id}`}
+                                  />
+                                  <label
+                                    htmlFor={`access-yes-${subAccount.id}`}
+                                  >
+                                    Yes
+                                  </label>
+                                </div>
+
+                                <div className="flex items-center space-x-2">
+                                  <RadioGroupItem
+                                    value="no"
+                                    id={`access-no-${subAccount.id}`}
+                                  />
+                                  <label htmlFor={`access-no-${subAccount.id}`}>
+                                    No
+                                  </label>
+                                </div>
+                              </RadioGroup>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )} */}
                   {authUserData?.role === "AGENCY_OWNER" && (
                     <div>
                       <Separator className="my-4" />
