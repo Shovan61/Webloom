@@ -26,7 +26,7 @@ import { SubAccount } from "@/generated/prisma";
 import CreateSubAccountButton from "./_components/create-subaccount";
 import DeleteButton from "./_components/delete-subaccount";
 
-type Props = {
+type Props = { 
   params: {
     agencyId: string;
   };
