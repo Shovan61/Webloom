@@ -6,7 +6,7 @@ import {
   User as AuthUser,
 } from "@clerk/nextjs/server";
 import { db } from "./db";
-import { Agency, Plan, SubAccount, User } from "@/generated/prisma";
+import { Agency, Plan, Role, SubAccount, User } from "@/generated/prisma";
 import { v4 } from "uuid";
 
 enum Icon {
@@ -547,19 +547,19 @@ export const getAgencyDetails = async (agencyId: string) => {
   }
 };
 
-export const getAgencyInfo = async (agencyId: string)  => {
-try {
-  const response = await db.agency.findUnique({
-    where: {
-      id: agencyId
-    }
-  })
-  return response
-} catch (error) {
-  console.log(error);
+export const getAgencyInfo = async (agencyId: string) => {
+  try {
+    const response = await db.agency.findUnique({
+      where: {
+        id: agencyId,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
     throw new Error("Something went wrong! getAgencyInfo");
-}
-}
+  }
+};
 
 export const getUserPermissions = async (userId: string) => {
   try {
@@ -627,42 +627,72 @@ export const changeUserPermission = async (
   }
 };
 
-
 export const getSubAccountDetails = async (subaccountId: string) => {
-    const response = await db.subAccount.findUnique({
-        where: { id: subaccountId },
-    });
+  const response = await db.subAccount.findUnique({
+    where: { id: subaccountId },
+  });
 
-    return response;
+  return response;
 };
 
 export const deleteSubAccount = async (subaccountId: string) => {
-    const response = await db.subAccount.delete({
-        where: {
-            id: subaccountId,
-        },
-    });
+  const response = await db.subAccount.delete({
+    where: {
+      id: subaccountId,
+    },
+  });
 
-    return response;
+  return response;
 };
 
 export const getUser = async (id: string) => {
-    const user = await db.user.findUnique({
-        where: {
-            id,
-        },
-    });
+  const user = await db.user.findUnique({
+    where: {
+      id,
+    },
+  });
 
-    return user;
+  return user;
 };
 
 export const deleteUser = async (userId: string) => {
-    const client = await clerkClient();
-    await client.users.updateUserMetadata(userId, {
-        privateMetadata: {
-            role: undefined,
-        },
+  const client = await clerkClient();
+  await client.users.updateUserMetadata(userId, {
+    privateMetadata: {
+      role: undefined,
+    },
+  });
+  const deletedUser = await db.user.delete({ where: { id: userId } });
+  return deletedUser;
+};
+
+export const sendInvitation = async (
+  role: Role,
+  email: string,
+  agencyId: string
+) => {
+  try {
+    const response = await db.invitation.create({
+      data: {
+        email,
+        role,
+        agencyId,
+      },
     });
-    const deletedUser = await db.user.delete({ where: { id: userId } });
-    return deletedUser;
+
+    const client = await clerkClient();
+    await client.invitations.createInvitation({
+      emailAddress: email,
+      redirectUrl: process.env.NEXT_PUBLIC_URL,
+      publicMetadata: {
+        throwDeprecation: true,
+        role,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong! sendInvitation");
+  }
 };

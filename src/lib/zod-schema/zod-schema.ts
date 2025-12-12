@@ -42,3 +42,10 @@ export const UserDetailsSchema = z.object({
 });
 
 export type UserDetailsFormValues = z.infer<typeof UserDetailsSchema>;
+
+export const UserDataSchema = z.object({
+  email: z.email("Invalid email address"),
+  role: z.enum(["AGENCY_ADMIN", "SUBACCOUNT_USER", "SUBACCOUNT_GUEST"]),
+});
+
+export type UserDataValues = z.infer<typeof UserDataSchema>;
