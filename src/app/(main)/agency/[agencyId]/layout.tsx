@@ -17,14 +17,15 @@ type Props = {
 };
 
 async function layout({ children, params }: Props) {
-  const agencyId = await verifyAndAcceptInvitation();
+  const { agencyId } = await params;
+  const agencyIdFromApi = await verifyAndAcceptInvitation();
   const user = await currentUser();
 
   if (!user) {
     return redirect("/");
   }
 
-  if (!agencyId) {
+  if (!agencyIdFromApi) {
     return redirect("/agency");
   }
 
@@ -47,7 +48,10 @@ async function layout({ children, params }: Props) {
     <div className="h-screen overflow-hidden">
       <Sidebar id={params.agencyId} type="agency" />
       <div className="md:pl-[300px]">
-         <InfoBar notifications={allNotifications} role={allNotifications.User?.role} />
+        <InfoBar
+          notifications={allNotifications}
+          role={allNotifications.User?.role}
+        />
         <div className="relative">
           <BlurPage>{children}</BlurPage>
         </div>

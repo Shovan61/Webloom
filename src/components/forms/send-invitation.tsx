@@ -52,6 +52,16 @@ function SendInvitation({ agencyId }: SendInvitationProps) {
         values.email,
         agencyId
       );
+      
+      console.log(response);
+
+      if (response === null) {
+        return toast.error("Can't sent!");
+      }
+
+      if (!response.email) {
+        return toast.error("Could not send invitation (Email missing!)");
+      }
 
       await saveActivityLogsNotification({
         agencyId,
@@ -85,7 +95,6 @@ function SendInvitation({ agencyId }: SendInvitationProps) {
             className="flex flex-col gap-6"
           >
             <FormField
-              disabled={form.formState.isSubmitting}
               control={form.control}
               name="email"
               render={({ field }) => (
@@ -98,8 +107,8 @@ function SendInvitation({ agencyId }: SendInvitationProps) {
                 </FormItem>
               )}
             />
+
             <FormField
-              disabled={form.formState.isSubmitting}
               control={form.control}
               name="role"
               render={({ field }) => (

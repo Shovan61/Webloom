@@ -672,6 +672,15 @@ export const sendInvitation = async (
   agencyId: string
 ) => {
   try {
+    const existingInvitation = await db.invitation.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (existingInvitation) {
+      return existingInvitation;
+    }
+
     const response = await db.invitation.create({
       data: {
         email,
