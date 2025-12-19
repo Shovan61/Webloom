@@ -705,3 +705,24 @@ export const sendInvitation = async (
     throw new Error("Something went wrong! sendInvitation");
   }
 };
+
+export const getNotificationAndUser = async (agencyId: string) => {
+  try {
+    const response = await db.notification.findMany({
+      where: {
+        agencyId: agencyId,
+      },
+      include: {
+        User: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Something went wrong! getNotificationAndUser");
+  }
+};
