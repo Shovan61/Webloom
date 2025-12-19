@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import InfoBar from "@/components/global/infobar";
+import Sidebar from "@/components/sidebar";
 import Unauthorized from "@/components/unauthorized";
 import {
   getAuthUserDetails,
@@ -56,7 +58,19 @@ async function SubaccountLayout({ children, params }: Props) {
     }
   }
 
-  return <div>SubaccountLayout</div>;
+  return (
+    <div className="h-screen overflow-hidden">
+      <Sidebar id={subaccountid} type="subaccount" />
+      <div className="md:pl-[300px]">
+        <InfoBar
+          notifications={notifications}
+          role={user.privateMetadata.role as string}
+          subAccountId={subaccountid as string}
+        />
+        <div className="relative">{children}</div>
+      </div>
+    </div>
+  );
 }
 
 export default SubaccountLayout;
