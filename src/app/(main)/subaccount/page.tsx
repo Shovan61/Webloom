@@ -1,7 +1,7 @@
 import Unauthorized from "@/components/unauthorized";
 import { getAuthUserDetails, verifyAndAcceptInvitation } from "@/lib/query";
 import { redirect } from "next/navigation";
-import React from "react";
+
 
 type Props = {
   searchParams: {
